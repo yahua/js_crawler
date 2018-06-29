@@ -19,6 +19,11 @@ function getUrlInfo(url) {
     }
 }
 
-function getNodeAttribute() {
+function getNodeAttribute(node, attribute) {
     
+    if (node.attributes.hasOwnProperty(attribute)) {
+        return node.attributes[attribute].nodeValue;
+    }else {
+        return null;
+    }
 }

@@ -43,7 +43,7 @@ function ins_crawler(websiteUrl, html) {
     }else { //图集类型
         var reg = /window._sharedData = (.*?);</;
         var result = reg.exec(html);
-        if (result.length > 0) {
+        if (result && result.length > 0) {
             var imageJsonString = result[1];
             var object = JSON.parse(imageJsonString);
             var imageList = [];

@@ -4,7 +4,8 @@
 function crawler() {
     //var object = xnxx_xvides_html();
     //var object = ins_html();
-    var object = facebook_html();
+    //var object = facebook_html();
+    var object = xhamster_html();
     var url = object['url'];
     var html = object['html'];
     reptileResource(url, html)
@@ -42,6 +43,9 @@ function reptileWithHtml(websiteUrl, html) {
     if (host.indexOf('xnxx') != -1 ||
         host.indexOf('xvideos') != -1) {
         resourceList = xnxx_xvideos_crawler(websiteUrl, html);
+    }
+    if (host.indexOf('xhamster') != -1) {
+        resourceList = xhamster_crawler(websiteUrl, html);
     }
 
     return resourceList;
