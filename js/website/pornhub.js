@@ -1,18 +1,25 @@
-function xhamster_crawler(websiteUrl, html) {
+function pornhub_crawler(websiteUrl, html) {
 
     var resultList = [];
 
     //获取详情的视频信息
     var title = getMiddleString(html, "property=\"og:title\" content=\"", "\"");
-    var thumbUrl = getMiddleString(html, "\"thumbURL\":\"", "\"");
-    //视频质量多种
-    var videoList = [];
-    var videoString = getMiddleString(html, "\"mp4\":{", "}");
+    var thumbUrl = getMiddleString(html, "property=\"og:image\" content=\"", "\"");
+    var videoString = getMiddleString(html, "\"mediaDefinitions\":[", "]");
     if (videoString) {
-        videoString = '{' + videoString + '}';
-        var videoDict = JSON.parse(videoString);
-        for (var key in videoDict) {
-            videoList.push(videoDict[key]);
+        videoString = '[' + videoString + ']';
+        var videoJsonArray = JSON.parse(videoString);
+        //视频质量多种
+        var videoList = [];
+        for (var i in videoJsonArray) {
+            var videoUrl = videoJsonArray[i]['videoUrl'];
+            if (videoUrl && !getUrlInfo(videoUrl)['scheme']){
+                videoUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
+                    getUrlInfo(websiteUrl)['host'] + videoUrl;
+            }
+            if (videoUrl) {
+                videoList.push(videoUrl);
+            }
         }
         if (videoList.length >0 ){
             var object = {};
@@ -23,9 +30,9 @@ function xhamster_crawler(websiteUrl, html) {
             resultList.push(object);
         }
     }
-    
+
     //获取列表
-    var list = xhamster_list_crawler(websiteUrl, html);
+    var list = pornhub_list_crawler(websiteUrl, html);
     if (list.length>0) {
         resultList.push(list);
     }
@@ -33,14 +40,14 @@ function xhamster_crawler(websiteUrl, html) {
     return resultList;
 }
 
-function xhamster_list_crawler(websiteUrl, html) {
+function pornhub_list_crawler(websiteUrl, html) {
 
     var resourceList = [];
 
     var el = document.createElement( 'html' );
     el.innerHTML = html;
     var evaluator = new XPathEvaluator();
-    var xPathResult = evaluator.evaluate("//div[@class='items clearfix']/div[@class='item-container']", el, null,
+    var xPathResult = evaluator.evaluate("//div[@class='positionRelative singleVideo']", el, null,
         XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
 
     if (xPathResult){
@@ -50,7 +57,7 @@ function xhamster_list_crawler(websiteUrl, html) {
             var videoName;
             var thumbUrl;
             var a_list = node.getElementsByTagName('a');
-            if (a_list.length >= 0) {
+            if (a_list.length > 0) {
                 videoUrl = a_list[0].attributes['href'].nodeValue;
                 //补全
                 if (videoUrl && !getUrlInfo(videoUrl)['scheme']){
@@ -59,12 +66,11 @@ function xhamster_list_crawler(websiteUrl, html) {
                 }
             }
             var img_list = node.getElementsByTagName('img');
-            for (var i = 0; i < img_list.length; i++) {
-                if (getNodeAttribute(img_list[i], 'class') == 'thumb') {
-                    thumbUrl = getNodeAttribute(img_list[i], 'src');
-                    videoName = getNodeAttribute(img_list[i], 'alt');
-                }
+            if (img_list.length > 0) {
+                thumbUrl = getNodeAttribute(img_list[0], 'src');
+                videoName = getNodeAttribute(img_list[0], 'alt');
             }
+
             var resourceInfo = {};
             resourceInfo.websiteUrl = websiteUrl;
             resourceInfo.thumbUrl = thumbUrl;

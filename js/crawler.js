@@ -47,6 +47,9 @@ function reptileWithHtml(websiteUrl, html) {
     if (host.indexOf('xhamster') != -1) {
         resourceList = xhamster_crawler(websiteUrl, html);
     }
+    if (host.indexOf('pornhub') != -1) {
+        resourceList = pornhub_crawler(websiteUrl, html);
+    }
 
     return resourceList;
 }
