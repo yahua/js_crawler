@@ -72,10 +72,9 @@ function pornhub_list_crawler(websiteUrl, html) {
             }
 
             var resourceInfo = {};
-            resourceInfo.websiteUrl = websiteUrl;
+            resourceInfo.websiteUrl = videoUrl;
             resourceInfo.thumbUrl = thumbUrl;
             resourceInfo.name = videoName;
-            resourceInfo.videoUrlList = [videoUrl];
             resourceInfo.isNeedParse = true;
             resourceList.push(resourceInfo);
 

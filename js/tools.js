@@ -27,3 +27,60 @@ function getNodeAttribute(node, attribute) {
         return null;
     }
 }
+
+function getNodeAttributeOrHtml(node, tag, containAttributeArray, equalAttributeDict, containAttributeDict, attribute) {
+
+    var tag_list = node.getElementsByTagName(tag);
+    for (var i in tag_list) {
+
+        var isMeet = true; //是否符合条件
+        //是否包含属性
+        for (var j in containAttributeArray) {
+            var attribute = containAttributeArray[j];
+            var value = getNodeAttribute(tag_list[i], attribute);
+            if (!value) {
+                isMeet = false;
+            }
+        }
+        if (!isMeet) {
+            continue;
+        }
+        //是否属性相等
+        for (var k in equalAttributeDict) {
+            var value1 = equalAttributeDict[k];
+            var value2 = getNodeAttribute(tag_list[i], k);
+            if (value1 != value2) {
+                isMeet = false;
+            }
+        }
+        if (!isMeet) {
+            continue;
+        }
+
+        //是否属性的值包含了。。。
+        for (var k in containAttributeDict) {
+            var value1 = containAttributeDict[k];
+            var value2 = getNodeAttribute(tag_list[i], k);
+            if (value2.indexOf(value1) == -1) {
+                isMeet = false;
+            }
+        }
+        if (!isMeet) {
+            continue;
+        }
+
+        if(attribute) {
+            return getNodeAttribute(tag_list[i], k);
+        }else {
+            return tag_list[i].innerHTML;
+        }
+    }
+    return null;
+}
+
+function getHtmlWithUrl(websiteUrl) {
+
+    //客户端实现
+
+    return "";
+}

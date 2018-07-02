@@ -53,10 +53,9 @@ function xnxx_xvideos_detail_crawler(websiteUrl, html) {
         var relateName = object['tf'];
 
         var resourceInfo = {};
-        resourceInfo.websiteUrl = websiteUrl;
+        resourceInfo.websiteUrl = relateVideUrl;
         resourceInfo.thumbUrl = relateThumbUrl;
         resourceInfo.name = relateName;
-        resourceInfo.videoUrlList = [relateVideUrl];
         resourceInfo.isNeedParse = true;
         resultList.push(resourceInfo);
     }
@@ -93,17 +92,16 @@ function xnxx_xvideos_list_crawler(websiteUrl, html) {
                 var thumbUrl;
                 var img_list = node.getElementsByTagName('img');
                 if (img_list.length > 0) {
-                    thumbUrl = img_list[0].attributes['data-src'].nodeValue;
+                    thumbUrl = getNodeAttribute(img_list[0], 'data-src');
                     if (!thumbUrl) {
-                        thumbUrl = img_list[0].attributes['src'].nodeValue;
+                        thumbUrl = getNodeAttribute(img_list[0], 'src');
                     }
                 }
             }
             var resourceInfo = {};
-            resourceInfo.websiteUrl = websiteUrl;
+            resourceInfo.websiteUrl = videoUrl;
             resourceInfo.thumbUrl = thumbUrl;
             resourceInfo.name = videoName;
-            resourceInfo.videoUrlList = [videoUrl];
             resourceInfo.isNeedParse = true;
             resourceList.push(resourceInfo);
 
