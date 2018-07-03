@@ -23,7 +23,7 @@ function reptileResource(websiteUrl, html) {
     var jsonStr = JSON.stringify(resourceList, undefined, 4);
     console.log(jsonStr);
 
-    return resourceList;
+    return jsonStr;
 }
 
 function reptileWithHtml(websiteUrl, html) {
@@ -36,22 +36,23 @@ function reptileWithHtml(websiteUrl, html) {
     var resourceList = [];
     if (host.indexOf('instagram') != -1) {
         resourceList = ins_crawler(websiteUrl, html);
-    }
-    if (host.indexOf('facebook') != -1) {
+    }else if (host.indexOf('facebook') != -1) {
         resourceList = facebook_crawler(websiteUrl, html);
-    }
-    if (host.indexOf('xnxx') != -1 ||
+    }else if (host.indexOf('xnxx') != -1 ||
         host.indexOf('xvideos') != -1) {
         resourceList = xnxx_xvideos_crawler(websiteUrl, html);
-    }
-    if (host.indexOf('xhamster') != -1) {
+    }else if (host.indexOf('xhamster') != -1) {
         resourceList = xhamster_crawler(websiteUrl, html);
-    }
-    if (host.indexOf('pornhub') != -1) {
+    }else if (host.indexOf('pornhub') != -1) {
         resourceList = pornhub_crawler(websiteUrl, html);
-    }
-    if (host.indexOf('vimeo') != -1) {
+    }else if (host.indexOf('vimeo') != -1) {
         resourceList = vimeo_crawler(websiteUrl, html);
+    }else if (host.indexOf('dailymotion') != -1) {
+        resourceList = dailymotion_crawler(websiteUrl, html);
+    }else if (host.indexOf('videos.pexels') != -1) {
+        resourceList = videospexels_crawler(websiteUrl, html);
+    }else {
+        resourceList = other_crawler(websiteUrl, html);
     }
 
     return resourceList;

@@ -31,13 +31,13 @@ function getNodeAttribute(node, attribute) {
 function getNodeAttributeOrHtml(node, tag, containAttributeArray, equalAttributeDict, containAttributeDict, attribute) {
 
     var tag_list = node.getElementsByTagName(tag);
-    for (var i in tag_list) {
+    for (var i=0; i<tag_list.length; i++) {
 
         var isMeet = true; //是否符合条件
         //是否包含属性
-        for (var j in containAttributeArray) {
-            var attribute = containAttributeArray[j];
-            var value = getNodeAttribute(tag_list[i], attribute);
+        for (var j=0; j<containAttributeArray.length; j++) {
+            var containAttribute = containAttributeArray[j];
+            var value = getNodeAttribute(tag_list[i], containAttribute);
             if (!value) {
                 isMeet = false;
             }
@@ -70,7 +70,7 @@ function getNodeAttributeOrHtml(node, tag, containAttributeArray, equalAttribute
         }
 
         if(attribute) {
-            return getNodeAttribute(tag_list[i], k);
+            return getNodeAttribute(tag_list[i], attribute);
         }else {
             return tag_list[i].innerHTML;
         }

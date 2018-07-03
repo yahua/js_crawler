@@ -76,34 +76,30 @@ function xnxx_xvideos_list_crawler(websiteUrl, html) {
     if (xPathResult){
         var node = xPathResult.iterateNext();
         while(node) {
-            var a_list = node.getElementsByTagName('a');
-            if (a_list.length >= 2) {
-                var videoUrl = a_list[1].attributes['href'].nodeValue;
-                //补全
-                if (videoUrl && !getUrlInfo(videoUrl)['scheme']){
-                    videoUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
-                        getUrlInfo(websiteUrl)['host'] + videoUrl;
-                }
-
-                var videoName;
-                if (a_list[1].attributes.hasOwnProperty('title')) {
-                    videoName = a_list[1].attributes['title'].nodeValue;
-                }
-                var thumbUrl;
-                var img_list = node.getElementsByTagName('img');
-                if (img_list.length > 0) {
-                    thumbUrl = getNodeAttribute(img_list[0], 'data-src');
-                    if (!thumbUrl) {
-                        thumbUrl = getNodeAttribute(img_list[0], 'src');
-                    }
-                }
+            var videoUrl = getNodeAttributeOrHtml(node, 'a', ['href', 'title'], {'class':null},
+                null, 'href');
+            var videoName = getNodeAttributeOrHtml(node, 'a', ['href', 'title'], {'class':null},
+                null, 'title');
+            var thumbUrl = getNodeAttributeOrHtml(node, 'img', ['data-src'], null,
+                null, 'data-src');
+            if (!thumbUrl) {
+                thumbUrl = getNodeAttributeOrHtml(node, 'img', ['src'], null,
+                    null, 'src');
             }
-            var resourceInfo = {};
-            resourceInfo.websiteUrl = videoUrl;
-            resourceInfo.thumbUrl = thumbUrl;
-            resourceInfo.name = videoName;
-            resourceInfo.isNeedParse = true;
-            resourceList.push(resourceInfo);
+            //补全
+            if (videoUrl && !getUrlInfo(videoUrl)['scheme']){
+                videoUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
+                    getUrlInfo(websiteUrl)['host'] + videoUrl;
+            }
+            if (videoUrl) {
+                var resourceInfo = {};
+                resourceInfo.websiteUrl = videoUrl;
+                resourceInfo.thumbUrl = thumbUrl;
+                resourceInfo.name = videoName;
+                resourceInfo.isNeedParse = true;
+                resourceList.push(resourceInfo);
+            }
+
 
             node = xPathResult.iterateNext();
         }
