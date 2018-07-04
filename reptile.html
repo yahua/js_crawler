@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>测试爬取</title>
-    <script src="js/test.js"></script>
+    <script src="https://requirejs.org/docs/release/2.3.5/comments/require.js"></script>
     <script src="js/tools.js"></script>
     <script src="js/website/xnxx_xvideos.js"></script>
     <script src="js/website/instagram.js"></script>
@@ -14,13 +14,33 @@
     <script src="js/website/dailymotion.js"></script>
     <script src="js/website/videospexels.js"></script>
     <script src="js/website/other.js"></script>
-    <script src="js/crawler.js"></script>
+    <script src="js/demo/demo.js"></script>
 </head>
 <body>
 
-    <input id="id_input" type="text" value="https://www.cnblogs.com/flyGrey/p/6294091.html" /><br>
-
-    <a href="javascript:crawler()">爬取</a>
+    <h2 id="id_status">等待爬取</h2>
+    <input id="id_input" type="text" placeholder="请输入要爬取的网页" />
+    <a href="javascript:runTestInput()">手动输入爬取测试</a>
+    <br><br>
+    <select id="id_select">
+        <option value ="facebook">facebook</option>
+        <option value="ins">ins</option>
+        <option value="porhub_list">porhub_list</option>
+        <option value="porhub_detail">porhub_detail</option>
+        <option value="xnxx_list">xnxx_list</option>
+        <option value="xnxx_detail">xnxx_detail</option>
+        <option value="xviodes_list">xviodes_list</option>
+        <option value="xvideo_detail">xvideo_detail</option>
+        <option value="xhamster_list">xhamster_list</option>
+        <option value="xhamster_detail">xhamster_detail</option>
+        <option value="vimeo_list">vimeo_list</option>
+        <option value="vimeo_detail">vimeo_detail</option>
+        <option value="dailymotion">dailymotion</option>
+        <option value="videospexels">videospexels</option>
+    </select>
+    <a href="javascript:runTestSelect()">单个网站爬取测试</a>
+    <br><br>
+    <a href="javascript:runTestAll()">所有网站爬取测试</a>
 
 </body>
 </html>

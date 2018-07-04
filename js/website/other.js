@@ -63,7 +63,7 @@ function other_crawler(websiteUrl, html) {
                 var iframeHtml = getHtmlWithUrl(iframeUrl);
                 var iframeArray = other_crawler(iframeUrl, iframeHtml);
                 if (iframeArray && iframeArray.length>0) {
-                    resultList.push(iframeArray);
+                    resultList = resultList.concat(iframeArray);
                 }
             }
             node = xPathResult.iterateNext();

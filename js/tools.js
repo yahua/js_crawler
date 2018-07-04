@@ -1,4 +1,10 @@
+require(["js/demo/downloadhtml"])
+
 function getMiddleString(string, start, end) {
+
+    if (!string || string.length == 0) {
+        return null;
+    }
     var reg = ''+start+'\(.*?\)'+end+'';
     var result = string.match(reg);
     if (result && result.length > 0) {
@@ -81,6 +87,6 @@ function getNodeAttributeOrHtml(node, tag, containAttributeArray, equalAttribute
 function getHtmlWithUrl(websiteUrl) {
 
     //客户端实现
-
-    return "";
+    return downloadHtmlWithUrl(websiteUrl).html;
 }
+

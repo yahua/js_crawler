@@ -7,7 +7,7 @@ function xhamster_crawler(websiteUrl, html) {
     var thumbUrl = getMiddleString(html, "\"thumbURL\":\"", "\"");
     //视频质量多种
     var videoList = [];
-    var videoString = getMiddleString(html, "\"mp4\":{", "}");
+    var videoString = getMiddleString(html, "\"mp4\":\\{", "\\}");
     if (videoString) {
         videoString = '{' + videoString + '}';
         var videoDict = JSON.parse(videoString);
@@ -27,7 +27,7 @@ function xhamster_crawler(websiteUrl, html) {
     //获取列表
     var list = xhamster_list_crawler(websiteUrl, html);
     if (list.length>0) {
-        resultList.push(list);
+        resultList = resultList.concat(list);
     }
 
     return resultList;
@@ -58,13 +58,11 @@ function xhamster_list_crawler(websiteUrl, html) {
                         getUrlInfo(websiteUrl)['host'] + videoUrl;
                 }
             }
-            var img_list = node.getElementsByTagName('img');
-            for (var i = 0; i < img_list.length; i++) {
-                if (getNodeAttribute(img_list[i], 'class') == 'thumb') {
-                    thumbUrl = getNodeAttribute(img_list[i], 'src');
-                    videoName = getNodeAttribute(img_list[i], 'alt');
-                }
+            var imgString = getNodeAttributeOrHtml(node, 'div', ['style'], null, null, 'style');
+            if (imgString) {
+                thumbUrl = getMiddleString(imgString, 'background-image: url\\(', '\\)');
             }
+            videoName = getNodeAttributeOrHtml(node, 'div', [], {'class':'item_name'}, null, null);
             var resourceInfo = {};
             resourceInfo.websiteUrl = videoUrl;
             resourceInfo.thumbUrl = thumbUrl;

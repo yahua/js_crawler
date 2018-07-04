@@ -5,7 +5,7 @@ function pornhub_crawler(websiteUrl, html) {
     //获取详情的视频信息
     var title = getMiddleString(html, "property=\"og:title\" content=\"", "\"");
     var thumbUrl = getMiddleString(html, "property=\"og:image\" content=\"", "\"");
-    var videoString = getMiddleString(html, "\"mediaDefinitions\":[", "]");
+    var videoString = getMiddleString(html, "\"mediaDefinitions\":\\[", "\\]");
     if (videoString) {
         videoString = '[' + videoString + ']';
         var videoJsonArray = JSON.parse(videoString);
@@ -34,7 +34,7 @@ function pornhub_crawler(websiteUrl, html) {
     //获取列表
     var list = pornhub_list_crawler(websiteUrl, html);
     if (list.length>0) {
-        resultList.push(list);
+        resultList = resultList.concat(list);
     }
 
     return resultList;

@@ -20,7 +20,7 @@ function vimeo_crawler(websiteUrl, html) {
             if (videoUrl) {
                 //二级html
                 var secondHtml = getHtmlWithUrl(videoUrl);
-                var videoString = getMiddleString(secondHtml, "\"progressive\":[{", "}]");
+                var videoString = getMiddleString(secondHtml, "\"progressive\":\\[\\{", "\\}\\]");
                 if (videoString) {
                     videoString = '[{' + videoString + '}]';
                     var videoJsonArray = JSON.parse(videoString);
@@ -55,7 +55,7 @@ function vimeo_crawler(websiteUrl, html) {
     //获取列表
     var list = vimeo_list_crawler(websiteUrl, el);
     if (list.length>0) {
-        resultList.push(list);
+        resultList = resultList.concat(list);
     }
 
     return resultList;

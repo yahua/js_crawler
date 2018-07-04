@@ -1,3 +1,4 @@
+
 function ins_crawler(websiteUrl, html) {
 
     var el = document.createElement( 'html' );
@@ -52,7 +53,7 @@ function ins_crawler(websiteUrl, html) {
                 var json = [];
                 var object = {};
                 object.websiteUrl = websiteUrl;
-                object.thumbUrl = imageList.first;
+                object.thumbUrl = imageList[0];
                 object.videoUrlList = imageList;
                 object.resourceType = 1;
                 json.push(object);

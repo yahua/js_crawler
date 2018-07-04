@@ -1,17 +1,4 @@
 
-//crawler();
-
-function crawler() {
-    //var object = xnxx_xvides_html();
-    //var object = ins_html();
-    //var object = facebook_html();
-    var object = xhamster_html();
-    var url = object['url'];
-    var html = object['html'];
-    reptileResource(url, html)
-}
-
-
 //开始爬取资源
 function reptileResource(websiteUrl, html) {
 
@@ -21,7 +8,6 @@ function reptileResource(websiteUrl, html) {
         resourceList = reptileWithHtml(websiteUrl, html);
     }
     var jsonStr = JSON.stringify(resourceList, undefined, 4);
-    console.log(jsonStr);
 
     return jsonStr;
 }
@@ -57,7 +43,3 @@ function reptileWithHtml(websiteUrl, html) {
 
     return resourceList;
 }
-
-
-
-
