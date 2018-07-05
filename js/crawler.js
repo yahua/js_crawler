@@ -14,7 +14,7 @@ function reptileResource(websiteUrl, html) {
 
 function reptileWithHtml(websiteUrl, html) {
 
-    if (!html) {
+    if (!html || html.length==0) {
         return [];
     }
     //获取host

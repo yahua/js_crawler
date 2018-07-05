@@ -1,5 +1,9 @@
 function other_crawler(websiteUrl, html) {
 
+    if (!html || html.length==0) {
+        return [];
+    }
+
     var resultList = [];
 
     var el = document.createElement( 'html' );

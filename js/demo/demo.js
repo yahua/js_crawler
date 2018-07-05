@@ -6,7 +6,8 @@ require(["js/tools"])
 
 
 var websiteDict = {'facebook':'https://www.facebook.com/JTKPages/videos/1410461019062584/',
-    'ins':'https://www.instagram.com/p/BjMXP0wBdwZ/?tagged=video',
+    'ins_video':'https://www.instagram.com/p/BjMXP0wBdwZ/?tagged=video',
+    'ins_photo':'https://www.instagram.com/p/Bkukc40A48T/?utm_source=ig_share_sheet&igshid=tpuw95i95enm',
     'porhub_list':'https://www.pornhub.com/',
     'porhub_detail':'https://www.pornhub.com/view_video.php?viewkey=ph5aadc84d4920e',
     'xnxx_list':'https://www.xnxx.com/',
@@ -87,15 +88,39 @@ function runTestWithWebsiteUrl(url) {
             console.log(htmlrequest.html);
             return false;
         }
-        var result = reptileResource(url, htmlrequest.html);
+        var html = htmlrequest.html;
+        var result = reptileResource(url, html);
         var obj = JSON.parse(result);
         if (obj && obj.length>0) {
             var output = {"websiteUrl":url, "resourceList":obj};
             console.log(url + '  共爬取到' + obj.length + '个资源');
             console.log(JSON.stringify(output, undefined, 4));
-            return true;
+            //检查资源的有效性
+            var validResource = true;
+            for (var i=0; i<obj.length; i++){
+                var dict = obj[i];
+                if (!dict.hasOwnProperty('websiteUrl')) {
+                    console.log('没有设置资源的websiteUrl');
+                    validResource = false;
+                    break;
+                }
+                if (!dict['websiteUrl'] ||dict['websiteUrl'].length==0) {
+                    console.log('资源的websiteUrl为空');
+                    validResource = false;
+                    break;
+                }
+                if (!dict.hasOwnProperty('isNeedParse')) {
+                    var videoUrlList = dict['videoUrlList'];
+                    if (!videoUrlList || videoUrlList.length==0) {
+                        console.log('没有获取到资源的url');
+                        validResource = false;
+                        break;
+                    }
+                }
+            }
+            return validResource;
         }else {
-            console.log(url + '  共爬取到0个资源');
+            console.log(url + '  无法爬取到资源，请检查url或者js的完整性');
             console.log(url + '  爬取失败');
             return false;
         }
