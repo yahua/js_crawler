@@ -90,3 +90,11 @@ function getHtmlWithUrl(websiteUrl) {
     return downloadHtmlWithUrl(websiteUrl).html;
 }
 
+function supplementSchemeAndHost(resourceUrl, websiteUrl) {
+
+    if (resourceUrl && !getUrlInfo(resourceUrl)['scheme']){
+        resourceUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
+            getUrlInfo(websiteUrl)['host'] + resourceUrl;
+    }
+    return resourceUrl;
+}

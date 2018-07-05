@@ -5,13 +5,23 @@ function xhamster_crawler(websiteUrl, html) {
     //获取详情的视频信息
     var title = getMiddleString(html, "property=\"og:title\" content=\"", "\"");
     var thumbUrl = getMiddleString(html, "\"thumbURL\":\"", "\"");
+    if (thumbUrl) {
+        thumbUrl = thumbUrl.replace(/\\/g, "");
+    }
     //视频质量多种
     var videoList = [];
     var videoString = getMiddleString(html, "\"mp4\":\\{", "\\}");
     if (videoString) {
         videoString = '{' + videoString + '}';
         var videoDict = JSON.parse(videoString);
-        for (var key in videoDict) {
+        var keys = Object.keys(videoDict);
+        keys.sort(function (a, b) {
+            a = a.replace("p", "");
+            b = b.replace("p", "");
+            return b - a;
+        })
+        for (var i in keys) {
+            var key = keys[i];
             videoList.push(videoDict[key]);
         }
         if (videoList.length >0 ){

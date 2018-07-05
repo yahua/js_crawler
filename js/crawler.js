@@ -37,6 +37,8 @@ function reptileWithHtml(websiteUrl, html) {
         resourceList = dailymotion_crawler(websiteUrl, html);
     }else if (host.indexOf('videos.pexels') != -1) {
         resourceList = videospexels_crawler(websiteUrl, html);
+    }else if (host.indexOf('esm3') != -1) {
+        resourceList = esm3_crawler(websiteUrl, html);
     }else {
         resourceList = other_crawler(websiteUrl, html);
     }
