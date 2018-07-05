@@ -44,6 +44,29 @@ function esm3_crawler(websiteUrl, html) {
             }
         }
     }
+    if (resultList.length > 0) {
+        //补充缩略图
+        var thumbUrl;
+        var el = document.createElement( 'html' );
+        el.innerHTML = html;
+        var evaluator = new XPathEvaluator();
+        var xPathResult = evaluator.evaluate("//meta[@name='twitter:image']", el, null,
+            XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        if (xPathResult){
+            var node = xPathResult.iterateNext();
+            while(node) {
+                thumbUrl = getNodeAttribute(node, 'content');
+                if (thumbUrl) {
+                    break;
+                }
+                node = xPathResult.iterateNext();
+            }
+        }
+        for (var i=0; i<resultList.length; i++) {
+            var resourceInfo = resultList[i];
+            resourceInfo.thumbUrl = thumbUrl;
+        }
+    }
 
     return resultList;
 }
