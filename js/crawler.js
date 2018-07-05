@@ -37,10 +37,17 @@ function reptileWithHtml(websiteUrl, html) {
         resourceList = dailymotion_crawler(websiteUrl, html);
     }else if (host.indexOf('videos.pexels') != -1) {
         resourceList = videospexels_crawler(websiteUrl, html);
-    }else if (host.indexOf('esm3') != -1) {
+    }else if (host.indexOf('esssm3') != -1) {
         resourceList = esm3_crawler(websiteUrl, html);
     }else {
-        resourceList = other_crawler(websiteUrl, html);
+        var videoList = other_crawler(websiteUrl, html);
+        if (videoList && videoList.length>0) {
+            resourceList = resourceList.concat(videoList);
+        }
+        var audioList = other_audio_crawler(websiteUrl, html);
+        if (audioList && audioList.length>0) {
+            resourceList = resourceList.concat(audioList);
+        }
     }
 
     return resourceList;
