@@ -29,6 +29,10 @@ function other_audio_crawler(websiteUrl, html) {
         while(node) {
             resourceUrl = getNodeAttribute(node, 'src');
             if (resourceUrl) {
+                if(!getUrlInfo(resourceUrl).scheme) {
+                    resourceUrl = resourceUrl.replace(':', '');
+                    resourceUrl = 'http:' + resourceUrl;
+                }
                 break;
             }
             node = xPathResult.iterateNext();
@@ -42,11 +46,7 @@ function other_audio_crawler(websiteUrl, html) {
         var node = xPathResult.iterateNext();
         while(node) {
             name = node.innerHTML;
-            if (resourceUrl) {
-                if(!getUrlInfo(resourceUrl).scheme) {
-                    resourceUrl = resourceUrl.replace(':', '');
-                    resourceUrl = 'http:' + resourceUrl;
-                }
+            if (name) {
                 break;
             }
             node = xPathResult.iterateNext();

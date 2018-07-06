@@ -1,6 +1,12 @@
 
+var timeOutLength = 30 * 1000;  //超时时间 30s
+
 //开始爬取资源
 function reptileResource(websiteUrl, html) {
+
+    var timeId = setTimeout(function () {
+        return "";
+    }, timeOutLength);
 
     var resourceList = reptileWithHtml(websiteUrl, html);
     if (!resourceList || resourceList.length==0) {
@@ -8,6 +14,7 @@ function reptileResource(websiteUrl, html) {
         resourceList = reptileWithHtml(websiteUrl, html);
     }
     var jsonStr = JSON.stringify(resourceList, undefined, 4);
+    clearTimeout(timeId);
 
     return jsonStr;
 }
@@ -37,7 +44,7 @@ function reptileWithHtml(websiteUrl, html) {
         resourceList = dailymotion_crawler(websiteUrl, html);
     }else if (host.indexOf('videos.pexels') != -1) {
         resourceList = videospexels_crawler(websiteUrl, html);
-    }else if (host.indexOf('esssm3') != -1) {
+    }else if (host.indexOf('esm3') != -1) {
         resourceList = esm3_crawler(websiteUrl, html);
     }else {
         var videoList = other_crawler(websiteUrl, html);
