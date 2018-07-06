@@ -39,6 +39,7 @@ function other_crawler(websiteUrl, html) {
             }
             if (videoUrl) {
                 if (!getUrlInfo(videoUrl)['scheme']) {
+                    videoUrl = videoUrl.replace('//', '');
                     videoUrl = 'http://' + videoUrl;
                 }
                 var thumbUrl = getNodeAttribute(node, 'poster');
@@ -63,6 +64,10 @@ function other_crawler(websiteUrl, html) {
                 if (tmpArray.length>=2 && tmpArray[tmpArray.length-1]==jsPath) { //js文件不处理
                     node = xPathResult.iterateNext();
                     continue;
+                }
+                if (!getUrlInfo(iframeUrl)['scheme']) {
+                    iframeUrl = iframeUrl.replace('//', '');
+                    iframeUrl = 'http://' + iframeUrl;
                 }
                 var iframeHtml = getHtmlWithUrl(iframeUrl);
                 var iframeArray = other_crawler(iframeUrl, iframeHtml);
