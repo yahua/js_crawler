@@ -5,8 +5,12 @@ var timeOutLength = 30 * 1000;  //超时时间 30s
 function reptileResource(websiteUrl, html) {
 
     var timeId = setTimeout(function () {
-        return "";
+        crawler_end(websiteUrl, JSON.stringify([], undefined, 4));
+        return '';
     }, timeOutLength);
+
+    //开始爬取
+    crawler_start(websiteUrl);
 
     var resourceList = reptileWithHtml(websiteUrl, html);
     if (!resourceList || resourceList.length==0) {
@@ -15,6 +19,9 @@ function reptileResource(websiteUrl, html) {
     }
     var jsonStr = JSON.stringify(resourceList, undefined, 4);
     clearTimeout(timeId);
+
+    //结束爬取
+    crawler_end(websiteUrl, jsonStr);
 
     return jsonStr;
 }

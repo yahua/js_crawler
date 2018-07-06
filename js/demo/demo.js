@@ -19,12 +19,15 @@ var websiteDict = {'facebook':'https://www.facebook.com/JTKPages/videos/14104610
     'vimeo_list':'https://vimeo.com/search?q=1',
     'vimeo_detail':'https://vimeo.com/268010875',
     'dailymotion':'http://www.dailymotion.com/video/x6i0oyq',
-    'videospexels':'https://videos.pexels.com/videos/video-of-people-walking-855564'};
+    'videospexels':'https://videos.pexels.com/videos/video-of-people-walking-855564',
+    'esm3_list_page':'https://www.esm3.com/',
+    'esm3_art_page':'https://www.esm3.com/artist-164',
+    'esm3_song_page':'https://www.esm3.com/song-4173.html',
+    'esm3_download_page':'https://www.esm3.com/mp3/get.asp?sid=4173'};
 
 function runTestInput() {
 
     var url = document.getElementById("id_input").value;
-
     document.getElementById("id_status").innerHTML = '爬取中...';
     var result = runTestWithWebsiteUrl(url);
     if (result) {

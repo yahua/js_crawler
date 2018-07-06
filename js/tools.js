@@ -84,12 +84,6 @@ function getNodeAttributeOrHtml(node, tag, containAttributeArray, equalAttribute
     return null;
 }
 
-function getHtmlWithUrl(websiteUrl) {
-
-    //客户端实现
-    return downloadHtmlWithUrl(websiteUrl).html;
-}
-
 function supplementSchemeAndHost(resourceUrl, websiteUrl) {
 
     if (resourceUrl && !getUrlInfo(resourceUrl)['scheme']){
