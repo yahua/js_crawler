@@ -10,14 +10,15 @@ function other_crawler(websiteUrl, html) {
     el.innerHTML = html;
 
     var evaluator = new XPathEvaluator();
-    var xPathResult = evaluator.evaluate("//video", el, null,
+    var xPathResult = document.evaluate("//video", el, null,
         XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
     if (xPathResult){
         var node = xPathResult.iterateNext();
         while(node) {
+            crawler_log('正在解析video标签');
             var videoUrl = getNodeAttribute(node, 'src');
             if (!videoUrl) {
-                var sourceResult = evaluator.evaluate("//video//source", el, null,
+                var sourceResult = document.evaluate("//video//source", el, null,
                     XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
                 if (sourceResult) {
                     var sourceNode = sourceResult.iterateNext();
@@ -48,32 +49,6 @@ function other_crawler(websiteUrl, html) {
                 resourceInfo.thumbUrl = thumbUrl;
                 resourceInfo.videoUrlList = [videoUrl];
                 resultList.push(resourceInfo);
-            }
-            node = xPathResult.iterateNext();
-        }
-    }
-    xPathResult = evaluator.evaluate("//iframe", el, null,
-        XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-    if (xPathResult){
-        var node = xPathResult.iterateNext();
-        while(node) {
-            var iframeUrl = getNodeAttribute(node, 'src');
-            if (iframeUrl) {
-                var jsPath = 'js';
-                var tmpArray = iframeUrl.split('.');
-                if (tmpArray.length>=2 && tmpArray[tmpArray.length-1]==jsPath) { //js文件不处理
-                    node = xPathResult.iterateNext();
-                    continue;
-                }
-                if (!getUrlInfo(iframeUrl)['scheme']) {
-                    iframeUrl = iframeUrl.replace('//', '');
-                    iframeUrl = 'http://' + iframeUrl;
-                }
-                var iframeHtml = getHtmlWithUrl(iframeUrl);
-                var iframeArray = other_crawler(iframeUrl, iframeHtml);
-                if (iframeArray && iframeArray.length>0) {
-                    resultList = resultList.concat(iframeArray);
-                }
             }
             node = xPathResult.iterateNext();
         }

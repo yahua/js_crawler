@@ -4,6 +4,27 @@ var timeOutLength = 30 * 1000;  //超时时间 30s
 //开始爬取资源
 function reptileResource(websiteUrl, html) {
 
+    function getImageUrl(x, y) {
+        var imgUrlList = [];
+        var el = document.elementFromPoint(x, y);
+        if (el.tagName.toLowerCase() == 'img') {
+            imgUrlList.push(el.src);
+            return imgUrlList;
+        }
+        //查找同大小的父节点
+        var parentNode = el;
+        while (parentNode.innerHTML.length == 0) {
+            parentNode = parentNode.parentNode;
+        }
+        var imgElementList =  parentNode.getElementsByTagName("img");
+        imgUrlList.push(parentNode.innerHTML);
+        for (var i=0; i<imgElementList.length; i++) {
+            var imgElement = imgElementList[i];
+            imgUrlList.push(imgElement.src);
+        }
+        return imgUrlList;
+    }
+    //设置超时时间
     var timeId = setTimeout(function () {
         crawler_end(websiteUrl, JSON.stringify([], undefined, 4));
         return '';
@@ -12,10 +33,21 @@ function reptileResource(websiteUrl, html) {
     //开始爬取
     crawler_start(websiteUrl);
 
-    var resourceList = reptileWithHtml(websiteUrl, html);
+    crawler_log('进入网站爬取')
+    var resourceList = crawlerUseWebsite(websiteUrl, html);
+    if (!resourceList || resourceList.length==0) {
+        crawler_log('进入通用方法爬取')
+        resourceList = crawlerUseCommon(websiteUrl, html);
+    }
+    //下载websiteUrl对应的html
     if (!resourceList || resourceList.length==0) {
         html = getHtmlWithUrl(websiteUrl);
-        resourceList = reptileWithHtml(websiteUrl, html);
+        crawler_log('下载网页，进入网站爬取')
+        resourceList = crawlerUseWebsite(websiteUrl, html);
+        if (!resourceList || resourceList.length==0) {
+            crawler_log('下载网页，进入通用爬取')
+            resourceList = crawlerUseCommon(websiteUrl, html);
+        }
     }
     var jsonStr = JSON.stringify(resourceList, undefined, 4);
     clearTimeout(timeId);
@@ -26,42 +58,51 @@ function reptileResource(websiteUrl, html) {
     return jsonStr;
 }
 
-function reptileWithHtml(websiteUrl, html) {
+//爬取已知的网站
+function crawlerUseWebsite(websiteUrl, html) {
 
     if (!html || html.length==0) {
         return [];
     }
     //获取host
     var host = getUrlInfo(websiteUrl)['host'];
-    var resourceList = [];
     if (host.indexOf('instagram') != -1) {
-        resourceList = ins_crawler(websiteUrl, html);
+        return ins_crawler(websiteUrl, html);
     }else if (host.indexOf('facebook') != -1) {
-        resourceList = facebook_crawler(websiteUrl, html);
+        return facebook_crawler(websiteUrl, html);
     }else if (host.indexOf('xnxx') != -1 ||
         host.indexOf('xvideos') != -1) {
-        resourceList = xnxx_xvideos_crawler(websiteUrl, html);
+        return xnxx_xvideos_crawler(websiteUrl, html);
     }else if (host.indexOf('xhamster') != -1) {
-        resourceList = xhamster_crawler(websiteUrl, html);
+        return xhamster_crawler(websiteUrl, html);
     }else if (host.indexOf('pornhub') != -1) {
-        resourceList = pornhub_crawler(websiteUrl, html);
+        return pornhub_crawler(websiteUrl, html);
     }else if (host.indexOf('vimeo') != -1) {
-        resourceList = vimeo_crawler(websiteUrl, html);
+        return vimeo_crawler(websiteUrl, html);
     }else if (host.indexOf('dailymotion') != -1) {
-        resourceList = dailymotion_crawler(websiteUrl, html);
+        return dailymotion_crawler(websiteUrl, html);
     }else if (host.indexOf('videos.pexels') != -1) {
-        resourceList = videospexels_crawler(websiteUrl, html);
+        return videospexels_crawler(websiteUrl, html);
     }else if (host.indexOf('esm3') != -1) {
-        resourceList = esm3_crawler(websiteUrl, html);
-    }else {
-        var videoList = other_crawler(websiteUrl, html);
-        if (videoList && videoList.length>0) {
-            resourceList = resourceList.concat(videoList);
-        }
-        var audioList = other_audio_crawler(websiteUrl, html);
-        if (audioList && audioList.length>0) {
-            resourceList = resourceList.concat(audioList);
-        }
+        return esm3_crawler(websiteUrl, html);
+    }
+    return [];
+}
+
+function crawlerUseCommon(websiteUrl, html) {
+
+    if (!html || html.length==0) {
+        return [];
+    }
+    var resourceList = [];
+
+    var videoList = other_crawler(websiteUrl, html);
+    if (videoList && videoList.length>0) {
+        resourceList = resourceList.concat(videoList);
+    }
+    var audioList = other_audio_crawler(websiteUrl, html);
+    if (audioList && audioList.length>0) {
+        resourceList = resourceList.concat(audioList);
     }
 
     return resourceList;

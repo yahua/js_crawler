@@ -49,6 +49,16 @@ function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
     //客户端可重写
 }
 
+/**
+ * @method 输出js爬取的log
+ */
+function crawler_log(log) {
+
+    //客户端可重写
+
+    console.log(log)
+}
+
 
 /**
  * @method 请求客户端下载html

@@ -25,6 +25,20 @@ var websiteDict = {'facebook':'https://www.facebook.com/JTKPages/videos/14104610
     'esm3_song_page':'https://www.esm3.com/song-4173.html',
     'esm3_download_page':'https://www.esm3.com/mp3/get.asp?sid=4173'};
 
+function runTestInputHtml() {
+
+    var url = document.getElementById("id_input_websiteUrl").value;
+    var html = document.getElementById("id_input_html").value;
+    document.getElementById("id_status").innerHTML = '爬取中...';
+    var result = runTestWithWebsiteUrl(url, html);
+    if (result) {
+        document.getElementById("id_status").innerHTML = '爬取成功';
+    }else {
+        document.getElementById("id_status").innerHTML = '爬取失败， 详情见log';
+    }
+
+}
+
 function runTestInput() {
 
     var url = document.getElementById("id_input").value;
@@ -74,7 +88,7 @@ function runTestAll() {
 }
 
 
-function runTestWithWebsiteUrl(url) {
+function runTestWithWebsiteUrl(url, html) {
 
     var scheme = getUrlInfo(url).scheme;
     var host = getUrlInfo(url).host;
@@ -85,14 +99,17 @@ function runTestWithWebsiteUrl(url) {
 
     console.log(url + '  爬取中...');
     try {
-        var htmlrequest = downloadHtmlWithUrl(url)
-        if (!htmlrequest.success) {
-            console.log(url + '  爬取失败, 无法获取website的html');
-            console.log(htmlrequest.html);
-            return false;
+        var crawlerHtml = html;
+        if (!crawlerHtml) {
+            var htmlRequest = downloadHtmlWithUrl(url);
+            if (!htmlRequest.success) {
+                console.log(url + '  爬取失败, 无法获取website的html');
+                console.log(htmlRequest.html);
+                return false;
+            }
+            crawlerHtml = htmlRequest.html;
         }
-        var html = htmlrequest.html;
-        var result = reptileResource(url, html);
+        var result = reptileResource(url, crawlerHtml);
         var obj = JSON.parse(result);
         if (obj && obj.length>0) {
             var output = {"websiteUrl":url, "resourceList":obj};
