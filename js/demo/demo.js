@@ -29,13 +29,17 @@ function runTestInputHtml() {
 
     var url = document.getElementById("id_input_websiteUrl").value;
     var html = document.getElementById("id_input_html").value;
-    document.getElementById("id_status").innerHTML = '爬取中...';
-    var result = runTestWithWebsiteUrl(url, html);
-    if (result) {
-        document.getElementById("id_status").innerHTML = '爬取成功';
-    }else {
-        document.getElementById("id_status").innerHTML = '爬取失败， 详情见log';
-    }
+
+    var input = html;
+    console.log(useJavaScriptHandleInputString(input));
+
+    // document.getElementById("id_status").innerHTML = '爬取中...';
+    // var result = runTestWithWebsiteUrl(url, html);
+    // if (result) {
+    //     document.getElementById("id_status").innerHTML = '爬取成功';
+    // }else {
+    //     document.getElementById("id_status").innerHTML = '爬取失败， 详情见log';
+    // }
 
 }
 

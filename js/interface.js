@@ -71,3 +71,84 @@ function getHtmlWithUrl(websiteUrl) {
     //测试代码
     return downloadHtmlWithUrl(websiteUrl).html;
 }
+
+
+function useJavaScriptHandleInputString(input) {
+
+    input = decodeURI(input);
+    input = encodeURI(input);
+    if (getUrlInfo(input).scheme) {
+        return input;
+    }else  {
+        //判断是否是huang wang
+        var canParseWebsiteDict ={'xnxx':'http://www.xnxx.com',
+                                             "xvideos":"http://www.xvideos.com",
+                                             "xhamster":"http://www.xhamster.com",
+                                             "pornhub":"http://www.pornhub.com"};
+        var findUrl;
+        for (var key in canParseWebsiteDict) {
+            if (input.toLowerCase() == key) {
+                findUrl = canParseWebsiteDict[key];
+                break;
+            }
+        }
+        if (!findUrl) {
+            findUrl = 'https://www.google.com/search?q=' + input + '&tbm=vid';
+        }
+        return findUrl;
+    }
+}
+
+function getImageJsCode(x, y) {
+    var jsCode = (function getImageUrl(x, y) {
+        var imgUrlList = [];
+        var el = document.elementFromPoint(x, y);
+        //当前节点是img
+        if (el.tagName.toLowerCase() == 'img') {
+            imgUrlList.push(el.src);
+            return imgUrlList;
+        }
+        //当前节点可获得backgroundImage
+        var backImage = el.style.backgroundImage;
+        if (backImage) {
+            imgUrlList.push(backImage);
+            return imgUrlList;
+        }
+        //查找父节点
+        var parentNode = el;
+        while (parentNode.innerHTML.length == 0) {
+            parentNode = parentNode.parentNode;
+        }
+        backImage = parentNode.style.backgroundImage;
+        if (backImage) {
+            backImage = backImage.replace('url(', '');
+            backImage = backImage.replace(')', '')
+            imgUrlList.push(backImage);
+            return imgUrlList;
+        }
+        //再取一级父节点，  否则facebook无法获取，  可以添加host判断
+        parentNode = parentNode.parentNode;
+        for (var i=0; i<parentNode.children.length; i++) {
+            backImage = parentNode.children[i].style.backgroundImage;
+            if (backImage) {
+                backImage = backImage.replace('url(', '');
+                backImage = backImage.replace(')', '')
+                imgUrlList.push(backImage);
+                return;
+            }
+        }
+        var imgElementList =  parentNode.getElementsByTagName("img");
+        for (var i=0; i<imgElementList.length; i++) {
+            var imgElement = imgElementList[i];
+            imgUrlList.push(imgElement.src);
+        }
+        return imgUrlList;
+    }).toString() + 'getImageUrl(' + x + ',' + y + ')';
+
+
+    return jsCode;
+}
+
+function test() {
+    return 'oc to js';
+}

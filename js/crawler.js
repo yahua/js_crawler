@@ -4,26 +4,6 @@ var timeOutLength = 30 * 1000;  //超时时间 30s
 //开始爬取资源
 function reptileResource(websiteUrl, html) {
 
-    function getImageUrl(x, y) {
-        var imgUrlList = [];
-        var el = document.elementFromPoint(x, y);
-        if (el.tagName.toLowerCase() == 'img') {
-            imgUrlList.push(el.src);
-            return imgUrlList;
-        }
-        //查找同大小的父节点
-        var parentNode = el;
-        while (parentNode.innerHTML.length == 0) {
-            parentNode = parentNode.parentNode;
-        }
-        var imgElementList =  parentNode.getElementsByTagName("img");
-        imgUrlList.push(parentNode.innerHTML);
-        for (var i=0; i<imgElementList.length; i++) {
-            var imgElement = imgElementList[i];
-            imgUrlList.push(imgElement.src);
-        }
-        return imgUrlList;
-    }
     //设置超时时间
     var timeId = setTimeout(function () {
         crawler_end(websiteUrl, JSON.stringify([], undefined, 4));
