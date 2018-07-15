@@ -1,8 +1,46 @@
 
 var timeOutLength = 30 * 1000;  //超时时间 30s
+var httpDownloadUrl = 'http://downloadup.ios-works.com/api/download';
 
 //开始爬取资源
 function reptileResource(websiteUrl, html) {
+
+    //开始爬取
+    crawler_start(websiteUrl);
+
+    crawler_log('进入接口爬取资源');
+    //将手机域名替换为正常域名
+    var newWebsiteUrl = websiteUrl.replace('//m.', '//www.')
+    newWebsiteUrl = newWebsiteUrl.replace('//mobile.', '//www.')
+    var httpResponse = httpRequest(httpDownloadUrl, 'post', {'url':newWebsiteUrl});
+    try {
+        var obj = JSON.parse(httpResponse);
+        if (obj.status == 1) {
+            var title = obj.result.title;
+            var thumbUrl = obj.result.thumbnail;
+            var videoUrl = obj.result.streams[0].url;
+            if (videoUrl && videoUrl.length>0) {
+                crawler_log('通过接口抓取到了资源');
+                if (!title ||title.length==0) {
+                    title = getUrlInfo(websiteUrl).host + '-' + new Date().getTime();
+                }
+                var json = [];
+                var object = {};
+                object.websiteUrl = websiteUrl;
+                object.thumbUrl = thumbUrl;
+                object.videoUrlList = [videoUrl];
+                object.name = title;
+                json.push(object);
+
+                var jsonStr = JSON.stringify(json, undefined, 4);
+                //结束爬取
+                crawler_end(websiteUrl, jsonStr);
+                return jsonStr;
+            }
+        }
+    }catch (e) {
+
+    }
 
     //设置超时时间
     var timeId = setTimeout(function () {
@@ -10,9 +48,7 @@ function reptileResource(websiteUrl, html) {
         return '';
     }, timeOutLength);
 
-    //开始爬取
-    crawler_start(websiteUrl);
-
+    //接口无法获取资源进入常规爬取
     crawler_log('进入网站爬取')
     var resourceList = crawlerUseWebsite(websiteUrl, html);
     if (!resourceList || resourceList.length==0) {

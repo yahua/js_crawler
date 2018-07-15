@@ -1,4 +1,3 @@
-
 //资源数据结构
 // {
 //     "websiteUrl": 网站的url
@@ -13,7 +12,7 @@
  * @method 爬取网页资源
  * @websiteUrl  网页对应的url
  * @html 网页对应的url
-*/
+ */
 function crawlerResource(websiteUrl, html) {
 
     //js实现
@@ -21,58 +20,9 @@ function crawlerResource(websiteUrl, html) {
 }
 
 /**
- * @method 爬取开始
- * @websiteUrl  网页对应的url
+ * @method 根据输入的搜索内容生成url，
+ * @input  用户输入
  */
-function crawler_start(websiteUrl) {
-
-    //客户端可重写
-}
-
-/**
- * @method 爬取结束
- * @websiteUrl  网页对应的url
- * @resourceInfoListJsonStr 资源数组对应的json格式
- */
-function crawler_end(websiteUrl, resourceInfoListJsonStr) {
-
-    //客户端可重写
-}
-
-/**
- * @method js每爬取到一个资源就会调用该函数
- * @websiteUrl  网页对应的url
- * @resourceInfo  资源对应的json格式
- */
-function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
-
-    //客户端可重写
-}
-
-/**
- * @method 输出js爬取的log
- */
-function crawler_log(log) {
-
-    //客户端可重写
-
-    console.log(log)
-}
-
-
-/**
- * @method 请求客户端下载html
- * @websiteUrl  网页对应的url
- */
-function getHtmlWithUrl(websiteUrl) {
-
-    //客户端实现
-
-    //测试代码
-    return downloadHtmlWithUrl(websiteUrl).html;
-}
-
-
 function useJavaScriptHandleInputString(input) {
 
     input = decodeURI(input);
@@ -82,9 +32,9 @@ function useJavaScriptHandleInputString(input) {
     }else  {
         //判断是否是huang wang
         var canParseWebsiteDict ={'xnxx':'http://www.xnxx.com',
-                                             "xvideos":"http://www.xvideos.com",
-                                             "xhamster":"http://www.xhamster.com",
-                                             "pornhub":"http://www.pornhub.com"};
+            "xvideos":"http://www.xvideos.com",
+            "xhamster":"http://www.xhamster.com",
+            "pornhub":"http://www.pornhub.com"};
         var findUrl;
         for (var key in canParseWebsiteDict) {
             if (input.toLowerCase() == key) {
@@ -99,6 +49,11 @@ function useJavaScriptHandleInputString(input) {
     }
 }
 
+/**
+ * @method 根据用户点击生成爬取图片的js代码， 该代码返回点击处的image的url
+ * @x   用户点击坐标x
+ * @y   用户点击坐标y
+ */
 function getImageJsCode(x, y) {
     var jsCode = (function getImageUrl(x, y) {
         var imgUrlList = [];
@@ -111,6 +66,8 @@ function getImageJsCode(x, y) {
         //当前节点可获得backgroundImage
         var backImage = el.style.backgroundImage;
         if (backImage) {
+            backImage = backImage.replace('url("', '');
+            backImage = backImage.replace('")', '');
             imgUrlList.push(backImage);
             return imgUrlList;
         }
@@ -121,18 +78,16 @@ function getImageJsCode(x, y) {
         }
         backImage = parentNode.style.backgroundImage;
         if (backImage) {
-            backImage = backImage.replace('url(', '');
-            backImage = backImage.replace(')', '')
+            backImage = backImage.replace('url("', '');
+            backImage = backImage.replace('")', '')
             imgUrlList.push(backImage);
             return imgUrlList;
         }
-        //再取一级父节点，  否则facebook无法获取，  可以添加host判断
-        parentNode = parentNode.parentNode;
         for (var i=0; i<parentNode.children.length; i++) {
             backImage = parentNode.children[i].style.backgroundImage;
             if (backImage) {
-                backImage = backImage.replace('url(', '');
-                backImage = backImage.replace(')', '')
+                backImage = backImage.replace('url("', '');
+                backImage = backImage.replace('")', '')
                 imgUrlList.push(backImage);
                 return;
             }
@@ -147,8 +102,4 @@ function getImageJsCode(x, y) {
 
 
     return jsCode;
-}
-
-function test() {
-    return 'oc to js';
 }
