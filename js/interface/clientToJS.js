@@ -12,11 +12,12 @@
  * @method 爬取网页资源
  * @websiteUrl  网页对应的url
  * @html 网页对应的url
+ * @clientType 0:ios   1:android
  */
-function crawlerResource(websiteUrl, html) {
+function crawlerResource(websiteUrl, html, clientType) {
 
     //js实现
-    reptileResource(websiteUrl, html)
+    reptileResource(websiteUrl, html, clientType)
 }
 
 /**

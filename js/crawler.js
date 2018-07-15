@@ -1,13 +1,15 @@
 
 var timeOutLength = 30 * 1000;  //超时时间 30s
 var httpDownloadUrl = 'http://downloadup.ios-works.com/api/download';
+var crawler_client_type = 0; //默认ios
 
 //开始爬取资源
-function reptileResource(websiteUrl, html) {
+function reptileResource(websiteUrl, html, clientType) {
 
     //开始爬取
     crawler_start(websiteUrl);
 
+    crawler_client_type = clientType;
     crawler_log('进入接口爬取资源');
     //将手机域名替换为正常域名
     var newWebsiteUrl = websiteUrl.replace('//m.', '//www.')
