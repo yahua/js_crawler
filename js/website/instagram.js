@@ -38,6 +38,7 @@ function ins_crawler(websiteUrl, html) {
             object.websiteUrl = websiteUrl;
             object.thumbUrl = thumbUrl;
             object.videoUrlList = [videoUrl];
+            object.resourceType = ResourceType.video;
             json.push(object);
             return json;
         }
@@ -55,7 +56,7 @@ function ins_crawler(websiteUrl, html) {
                 object.websiteUrl = websiteUrl;
                 object.thumbUrl = imageList[0];
                 object.videoUrlList = imageList;
-                object.resourceType = 1;
+                object.resourceType = ResourceType.image;
                 json.push(object);
                 return json;
             }

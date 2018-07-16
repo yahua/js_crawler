@@ -44,11 +44,12 @@ function other_crawler(websiteUrl, html) {
                     videoUrl = 'http://' + videoUrl;
                 }
                 var thumbUrl = getNodeAttribute(node, 'poster');
-                var resourceInfo = {};
-                resourceInfo.websiteUrl = websiteUrl;
-                resourceInfo.thumbUrl = thumbUrl;
-                resourceInfo.videoUrlList = [videoUrl];
-                resultList.push(resourceInfo);
+                var object = {};
+                object.websiteUrl = websiteUrl;
+                object.thumbUrl = thumbUrl;
+                object.videoUrlList = [videoUrl];
+                object.resourceType = ResourceType.video;
+                resultList.push(object);
             }
             node = xPathResult.iterateNext();
         }

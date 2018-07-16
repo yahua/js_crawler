@@ -32,6 +32,7 @@ function reptileResource(websiteUrl, html, clientType) {
                 object.thumbUrl = thumbUrl;
                 object.videoUrlList = [videoUrl];
                 object.name = title;
+                object.resourceType = ResourceType.video;
                 json.push(object);
 
                 var jsonStr = JSON.stringify(json, undefined, 4);

@@ -30,6 +30,7 @@ function xhamster_crawler(websiteUrl, html) {
             object.thumbUrl = thumbUrl;
             object.name = title;
             object.videoUrlList = videoList;
+            object.resourceType = ResourceType.video;
             resultList.push(object);
         }
     }
@@ -73,12 +74,13 @@ function xhamster_list_crawler(websiteUrl, html) {
                 thumbUrl = getMiddleString(imgString, 'background-image: url\\(', '\\)');
             }
             videoName = getNodeAttributeOrHtml(node, 'div', [], {'class':'item_name'}, null, null);
-            var resourceInfo = {};
-            resourceInfo.websiteUrl = videoUrl;
-            resourceInfo.thumbUrl = thumbUrl;
-            resourceInfo.name = videoName;
-            resourceInfo.isNeedParse = true;
-            resourceList.push(resourceInfo);
+            var object = {};
+            object.websiteUrl = videoUrl;
+            object.thumbUrl = thumbUrl;
+            object.name = videoName;
+            object.isNeedParse = true;
+            object.resourceType = ResourceType.video;
+            resourceList.push(object);
 
             node = xPathResult.iterateNext();
         }

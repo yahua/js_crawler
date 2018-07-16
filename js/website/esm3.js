@@ -166,7 +166,7 @@ function esm3_downloadPage_crawler(websiteUrl, html) {
         resourceInfo.thumbUrl = thumbUrl;
         resourceInfo.name = name;
         resourceInfo.videoUrlList = [resourceUrl];
-        resourceInfo.resourceType = 2;
+        resourceInfo.resourceType = ResourceType.audio;
         return resourceInfo;
     }else {
         console.log('爬取不到的网站:' + websiteUrl);

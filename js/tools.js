@@ -1,4 +1,13 @@
-require(["js/demo/downloadhtml"])
+
+//资源类型
+var ResourceType = {
+    unKnow:-1,
+    video:100,
+    image:200,
+    pdf:300,
+    m3u8:400,
+    audio:500,
+}
 
 function getMiddleString(string, start, end) {
 

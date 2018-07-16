@@ -27,6 +27,7 @@ function pornhub_crawler(websiteUrl, html) {
             object.thumbUrl = thumbUrl;
             object.name = title;
             object.videoUrlList = videoList;
+            object.resourceType = ResourceType.video;
             resultList.push(object);
         }
     }
@@ -71,12 +72,13 @@ function pornhub_list_crawler(websiteUrl, html) {
                 videoName = getNodeAttribute(img_list[0], 'alt');
             }
 
-            var resourceInfo = {};
-            resourceInfo.websiteUrl = videoUrl;
-            resourceInfo.thumbUrl = thumbUrl;
-            resourceInfo.name = videoName;
-            resourceInfo.isNeedParse = true;
-            resourceList.push(resourceInfo);
+            var object = {};
+            object.websiteUrl = videoUrl;
+            object.thumbUrl = thumbUrl;
+            object.name = videoName;
+            object.isNeedParse = true;
+            object.resourceType = ResourceType.video;
+            resourceList.push(object);
 
             node = xPathResult.iterateNext();
         }

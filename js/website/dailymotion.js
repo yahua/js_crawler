@@ -52,6 +52,7 @@ function dailymotion_crawler(websiteUrl, html) {
         object.thumbUrl = thumbUrl;
         object.name = videoName;
         object.videoUrlList = videoUrlList;
+        object.resourceType = ResourceType.video;
         json.push(object);
         return json;
     }

@@ -37,12 +37,13 @@ function vimeo_crawler(websiteUrl, html) {
                         }
                     }
                     if (videoList.length > 0) {
-                        var resourceInfo = {};
-                        resourceInfo.websiteUrl = websiteUrl;
-                        resourceInfo.thumbUrl = thumbUrl;
-                        resourceInfo.name = videoName;
-                        resourceInfo.videoUrlList = videoList;
-                        resultList.push(resourceInfo);
+                        var object = {};
+                        object.websiteUrl = websiteUrl;
+                        object.thumbUrl = thumbUrl;
+                        object.name = videoName;
+                        object.videoUrlList = videoList;
+                        object.resourceType = ResourceType.video;
+                        resultList.push(object);
                         break;
                     }
                 }
@@ -118,12 +119,13 @@ function vimeo_list_crawler(websiteUrl, el) {
                 }
             }
 
-            var resourceInfo = {};
-            resourceInfo.websiteUrl = videoUrl;
-            resourceInfo.thumbUrl = thumbUrl;
-            resourceInfo.name = videoName;
-            resourceInfo.isNeedParse = true;
-            resourceList.push(resourceInfo);
+            var object = {};
+            object.websiteUrl = videoUrl;
+            object.thumbUrl = thumbUrl;
+            object.name = videoName;
+            object.isNeedParse = true;
+            object.resourceType = object.video;
+            resourceList.push(object);
 
             node = xPathResult.iterateNext();
         }

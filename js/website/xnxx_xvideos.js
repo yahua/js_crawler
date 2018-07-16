@@ -29,6 +29,7 @@ function xnxx_xvideos_detail_crawler(websiteUrl, html) {
         object.thumbUrl = thumbUrl;
         object.name = title;
         object.videoUrlList = videoList;
+        object.resourceType = ResourceType.video;
         resultList.push(object);
     }
 
@@ -52,12 +53,13 @@ function xnxx_xvideos_detail_crawler(websiteUrl, html) {
         var relateThumbUrl = object['i'];
         var relateName = object['tf'];
 
-        var resourceInfo = {};
-        resourceInfo.websiteUrl = relateVideUrl;
-        resourceInfo.thumbUrl = relateThumbUrl;
-        resourceInfo.name = relateName;
-        resourceInfo.isNeedParse = true;
-        resultList.push(resourceInfo);
+        var object = {};
+        object.websiteUrl = relateVideUrl;
+        object.thumbUrl = relateThumbUrl;
+        object.name = relateName;
+        object.isNeedParse = true;
+        object.resourceType = ResourceType.video;
+        resultList.push(object);
     }
 
     return resultList;
@@ -92,12 +94,13 @@ function xnxx_xvideos_list_crawler(websiteUrl, html) {
                     getUrlInfo(websiteUrl)['host'] + videoUrl;
             }
             if (videoUrl) {
-                var resourceInfo = {};
-                resourceInfo.websiteUrl = videoUrl;
-                resourceInfo.thumbUrl = thumbUrl;
-                resourceInfo.name = videoName;
-                resourceInfo.isNeedParse = true;
-                resourceList.push(resourceInfo);
+                var object = {};
+                object.websiteUrl = videoUrl;
+                object.thumbUrl = thumbUrl;
+                object.name = videoName;
+                object.isNeedParse = true;
+                object.resourceType = ResourceType.video;
+                resourceList.push(object);
             }
 
 

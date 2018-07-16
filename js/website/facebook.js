@@ -23,6 +23,7 @@ function facebook_crawler(websiteUrl, html) {
         object.websiteUrl = websiteUrl;
         object.thumbUrl = thumbUrl;
         object.videoUrlList = [videoUrl];
+        object.resourceType = ResourceType.video;
         json.push(object);
         return json;
     }

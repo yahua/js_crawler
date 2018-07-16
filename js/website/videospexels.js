@@ -51,6 +51,7 @@ function videospexels_crawler(websiteUrl, html) {
         object.thumbUrl = thumbUrl;
         object.name = videoName;
         object.videoUrlList = [videoUrl];
+        object.resourceType = ResourceType.video;
         resultList.push(object);
     }
 
