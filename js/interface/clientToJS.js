@@ -18,26 +18,33 @@
 /**
  * @method 爬取网页资源
  * @websiteUrl  网页对应的url
- * @html 网页对应的url
+ * @html 网页对应的源码
  * @clientType 0:ios   1:android
  */
 function crawlerResource(websiteUrl, html, clientType) {
 
+    ClientType = clientType;
+    if (clientType == 1) { //安卓不能下载youtube的任何资源
+        if (getUrlInfo(websiteUrl).host.indexOf('youtube') != -1) {
+            var jsonStr = JSON.stringify([], undefined, 4);
+            crawler_end(websiteUrl, jsonStr);
+            return jsonStr;
+        }
+    }
     //js实现
-    reptileResource(websiteUrl, html, clientType)
+    return reptileResource(websiteUrl, html)
 }
 
 /**
  * @method 根据输入的搜索内容生成url，
  * @input  用户输入
  */
-function useJavaScriptHandleInputString(input) {
+function useJavaScriptHandleSearchString(input) {
 
     input = decodeURI(input);
     input = encodeURI(input);
-    if (getUrlInfo(input).scheme) {
-        return input;
-    }else  {
+    var returnInput = input;
+    if (!getUrlInfo(input).scheme) {
         //判断是否是huang wang
         var canParseWebsiteDict ={'xnxx':'http://www.xnxx.com',
             "xvideos":"http://www.xvideos.com",
@@ -53,8 +60,10 @@ function useJavaScriptHandleInputString(input) {
         if (!findUrl) {
             findUrl = 'https://www.google.com/search?q=' + input + '&tbm=vid';
         }
-        return findUrl;
+        returnInput = findUrl;
     }
+    handleSearchStringFinish(returnInput);
+    return returnInput;
 }
 
 /**

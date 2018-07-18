@@ -1,6 +1,6 @@
 
 //var download = require(["js/demo/downloadhtml"])
-require(["js/crawler"])
+require(["js/interface/clientToJS"])
 require(["js/demo/downloadhtml"])
 require(["js/tools"])
 
@@ -110,7 +110,7 @@ function runTestWithWebsiteUrl(url, html) {
             }
             crawlerHtml = htmlRequest.html;
         }
-        var result = reptileResource(url, crawlerHtml, 0);
+        var result = crawlerResource(url, crawlerHtml, 0);
         var obj = JSON.parse(result);
         if (obj && obj.length>0) {
             var output = {"websiteUrl":url, "resourceList":obj};

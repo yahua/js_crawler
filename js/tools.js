@@ -9,6 +9,8 @@ var ResourceType = {
     audio:500,
 }
 
+var ClientType = 0;   //客户端类型默认为ios   1：andriod
+
 function getMiddleString(string, start, end) {
 
     if (!string || string.length == 0) {

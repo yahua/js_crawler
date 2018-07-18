@@ -8,6 +8,9 @@
 function crawler_start(websiteUrl) {
 
     //客户端可重写
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        andriod.crawler_start(websiteUrl);
+    }
 }
 
 /**
@@ -18,6 +21,25 @@ function crawler_start(websiteUrl) {
 function crawler_end(websiteUrl, resourceInfoListJsonStr) {
 
     //客户端可重写
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        var list = JSON.parse(resourceInfoListJsonStr);
+        var newList = [];
+        if (list && list.length>0) {
+            //剔除youtube视频资源
+            for (var i=0; i<list.length; i++){
+                var dict = list[i];
+                var videoUrlList = dict['videoUrlList'];
+                if (videoUrlList && videoUrlList.length>0) {
+                    if (getUrlInfo(videoUrlList[0]).host.indexOf('youtube') != -1) {
+                        continue;
+                    }
+                }
+                newList.push(dict)
+            }
+        }
+        andriod.crawler_end(websiteUrl, JSON.stringify(newList, undefined, 4));
+    }
+
 }
 
 /**
@@ -28,6 +50,9 @@ function crawler_end(websiteUrl, resourceInfoListJsonStr) {
 function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
 
     //客户端可重写
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        andriod.crawler_one_Resource(websiteUrl, resourceInfoJsonStr);
+    }
 }
 
 /**
@@ -36,7 +61,9 @@ function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
 function crawler_log(log) {
 
     //客户端可重写
-
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        andriod.crawler_log(log);
+    }
     console.log(log)
 }
 
@@ -47,7 +74,9 @@ function crawler_log(log) {
 function getHtmlWithUrl(websiteUrl) {
 
     //客户端实现
-
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        andriod.getHtmlWithUrl(websiteUrl);
+    }
     //测试代码
     return downloadHtmlWithUrl(websiteUrl).html;
 }
@@ -60,6 +89,23 @@ function getHtmlWithUrl(websiteUrl) {
  */
 function httpRequest(url, method, requestData) {
 
+    //客户端实现
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        andriod.httpRequest(url, method, requestData);
+    }
     //默认返回
     return '';
+}
+
+/**
+ *
+ * @param searchUrl
+ */
+function handleSearchStringFinish(searchUrl) {
+
+    //客户端实现
+
+    if (ClientType == 1) {  //安卓会注入andriod对象
+        andriod.handleSearchStringFinish(searchUrl);
+    }
 }
