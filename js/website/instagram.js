@@ -33,14 +33,9 @@ function ins_crawler(websiteUrl, html) {
             }
         }
         if (videoUrl) {
-            var json = [];
-            var object = {};
-            object.websiteUrl = websiteUrl;
-            object.thumbUrl = thumbUrl;
-            object.videoUrlList = [videoUrl];
-            object.resourceType = ResourceType.video;
-            json.push(object);
-            return json;
+            var object = createResourceObject(websiteUrl, null, ResourceType.video, thumbUrl,
+                [videoUrl]);
+            return [object];
         }
     }else { //图集类型
         var reg = /window._sharedData = (.*?);</;
@@ -51,14 +46,9 @@ function ins_crawler(websiteUrl, html) {
             var imageList = [];
             ins_findImageWithDict(object, imageList);
             if (imageList.length>0){
-                var json = [];
-                var object = {};
-                object.websiteUrl = websiteUrl;
-                object.thumbUrl = imageList[0];
-                object.videoUrlList = imageList;
-                object.resourceType = ResourceType.image;
-                json.push(object);
-                return json;
+                var object = createResourceObject(websiteUrl, null, ResourceType.image,
+                    imageList[0], imageList);
+                return [object];
             }
         }
 

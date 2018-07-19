@@ -24,19 +24,9 @@ function reptileResource(websiteUrl, html) {
                 if (!title ||title.length==0) {
                     title = getUrlInfo(websiteUrl).host + '-' + new Date().getTime();
                 }
-                var json = [];
-                var object = {};
-                object.websiteUrl = websiteUrl;
-                object.thumbUrl = thumbUrl;
-                object.videoUrlList = [videoUrl];
-                object.name = title;
-                object.resourceType = ResourceType.video;
-                json.push(object);
-
-                var jsonStr = JSON.stringify(json, undefined, 4);
-                //结束爬取
-                crawler_end(websiteUrl, jsonStr);
-                return jsonStr;
+                var object = createResourceObject(websiteUrl, title, ResourceType.video,
+                    thumbUrl, [videoUrl]);
+                return [object];
             }
         }
     }catch (e) {
@@ -45,9 +35,7 @@ function reptileResource(websiteUrl, html) {
 
     //设置超时时间
     var timeId = setTimeout(function () {
-        var jsonStr = JSON.stringify([], undefined, 4);
-        crawler_end(websiteUrl, jsonStr);
-        return jsonStr;
+        return [];
     }, timeOutLength);
 
     //接口无法获取资源进入常规爬取
@@ -67,13 +55,9 @@ function reptileResource(websiteUrl, html) {
             resourceList = crawlerUseCommon(websiteUrl, html);
         }
     }
-    var jsonStr = JSON.stringify(resourceList, undefined, 4);
     clearTimeout(timeId);
 
-    //结束爬取
-    crawler_end(websiteUrl, jsonStr);
-
-    return jsonStr;
+    return resourceList;
 }
 
 //爬取已知的网站

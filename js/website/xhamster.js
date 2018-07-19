@@ -1,6 +1,15 @@
 function xhamster_crawler(websiteUrl, html) {
 
     var resultList = [];
+    resultList = resultList.concat(xhamster_detail_crawler(websiteUrl, html));
+    resultList = resultList.concat(xhamster_list_crawler(websiteUrl, html));
+
+    return resultList;
+}
+
+function xhamster_detail_crawler(websiteUrl, html) {
+
+    var resultList = [];
 
     //获取详情的视频信息
     var title = getMiddleString(html, "property=\"og:title\" content=\"", "\"");
@@ -25,22 +34,11 @@ function xhamster_crawler(websiteUrl, html) {
             videoList.push(videoDict[key]);
         }
         if (videoList.length >0 ){
-            var object = {};
-            object.websiteUrl = websiteUrl;
-            object.thumbUrl = thumbUrl;
-            object.name = title;
-            object.videoUrlList = videoList;
-            object.resourceType = ResourceType.video;
+            var object = createResourceObject(websiteUrl, title, ResourceType.video,
+                thumbUrl, videoList);
             resultList.push(object);
         }
     }
-    
-    //获取列表
-    var list = xhamster_list_crawler(websiteUrl, html);
-    if (list.length>0) {
-        resultList = resultList.concat(list);
-    }
-
     return resultList;
 }
 
@@ -69,18 +67,8 @@ function xhamster_list_crawler(websiteUrl, html) {
                         getUrlInfo(websiteUrl)['host'] + videoUrl;
                 }
             }
-            var imgString = getNodeAttributeOrHtml(node, 'div', ['style'], null, null, 'style');
-            if (imgString) {
-                thumbUrl = getMiddleString(imgString, 'background-image: url\\(', '\\)');
-            }
-            videoName = getNodeAttributeOrHtml(node, 'div', [], {'class':'item_name'}, null, null);
-            var object = {};
-            object.websiteUrl = videoUrl;
-            object.thumbUrl = thumbUrl;
-            object.name = videoName;
-            object.isNeedParse = true;
-            object.resourceType = ResourceType.video;
-            resourceList.push(object);
+            var videoHtml = getHtmlWithUrl(videoUrl);
+            resourceList = resourceList.concat(xhamster_detail_crawler(videoUrl, videoHtml));
 
             node = xPathResult.iterateNext();
         }

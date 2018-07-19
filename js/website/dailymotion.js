@@ -46,15 +46,9 @@ function dailymotion_crawler(websiteUrl, html) {
     }
 
     if (videoUrlList.length>0) {
-        var json = [];
-        var object = {};
-        object.websiteUrl = websiteUrl;
-        object.thumbUrl = thumbUrl;
-        object.name = videoName;
-        object.videoUrlList = videoUrlList;
-        object.resourceType = ResourceType.video;
-        json.push(object);
-        return json;
+        var object = createResourceObject(websiteUrl, videoName, ResourceType.video,
+            thumbUrl, videoUrlList);
+        return [object];
     }
     return [];
 }

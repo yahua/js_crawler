@@ -1,6 +1,15 @@
 function vimeo_crawler(websiteUrl, html) {
 
     var resultList = [];
+    resultList = resultList.concat(vimeo_detail_crawler(websiteUrl, html));
+    resultList = resultList.concat(vimeo_list_crawler(websiteUrl, html));
+
+    return resultList;
+}
+
+function vimeo_detail_crawler(websiteUrl, html) {
+
+    var resultList = [];
 
     var el = document.createElement( 'html' );
     el.innerHTML = html;
@@ -13,9 +22,9 @@ function vimeo_crawler(websiteUrl, html) {
         while(node) {
             var videoUrl = getNodeAttributeOrHtml(node, 'div', ['data-config-url'], null,
                 {'id':'player_'}, 'data-config-url');
-            var videoName = getNodeAttributeOrHtml(node, 'img', ['src'], {"class":"player_thumb"},
+            var thumbUrl = getNodeAttributeOrHtml(node, 'img', ['src'], {"class":"player_thumb"},
                 null, 'src');
-            var thumbUrl = getNodeAttributeOrHtml(node, 'img', ['alt'], {"class":"player_thumb"},
+            var videoName = getNodeAttributeOrHtml(node, 'img', ['alt'], {"class":"player_thumb"},
                 null, 'alt');
             if (videoUrl) {
                 //二级html
@@ -37,12 +46,8 @@ function vimeo_crawler(websiteUrl, html) {
                         }
                     }
                     if (videoList.length > 0) {
-                        var object = {};
-                        object.websiteUrl = websiteUrl;
-                        object.thumbUrl = thumbUrl;
-                        object.name = videoName;
-                        object.videoUrlList = videoList;
-                        object.resourceType = ResourceType.video;
+                        var object = createResourceObject(websiteUrl, videoName, ResourceType.video,
+                            thumbUrl, videoList);
                         resultList.push(object);
                         break;
                     }
@@ -52,20 +57,15 @@ function vimeo_crawler(websiteUrl, html) {
             node = xPathResult.iterateNext();
         }
     }
-
-    //获取列表
-    var list = vimeo_list_crawler(websiteUrl, el);
-    if (list.length>0) {
-        resultList = resultList.concat(list);
-    }
-
     return resultList;
 }
 
-function vimeo_list_crawler(websiteUrl, el) {
+function vimeo_list_crawler(websiteUrl, html) {
 
     var resourceList = [];
 
+    var el = document.createElement( 'html' );
+    el.innerHTML = html;
     var evaluator = new XPathEvaluator();
     var xPathResult = evaluator.evaluate("//li[@class='item list ']", el, null,
         XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
@@ -74,8 +74,6 @@ function vimeo_list_crawler(websiteUrl, el) {
         var node = xPathResult.iterateNext();
         while(node) {
             var videoUrl;
-            var videoName;
-            var thumbUrl;
             var a_list = node.getElementsByTagName('a');
             for (var i in a_list) {
                 var className = getNodeAttribute(a_list[i], 'class');
@@ -89,44 +87,10 @@ function vimeo_list_crawler(websiteUrl, el) {
                     break;
                 }
             }
-            var img_list = node.getElementsByTagName('img');
-            for (var i in img_list) {
-                thumbUrl = getNodeAttribute(img_list[i], 'srcset');
-                if (thumbUrl) {
-                    var tmpList = thumbUrl.split(',').pop().split(' ');
-                    if (tmpList.length > 2) {
-                        thumbUrl = tmpList[1];
-                        if (thumbUrl && !getUrlInfo(thumbUrl)['scheme']){
-                            thumbUrl = null;
-                        }
-                    }
-                }
-                if (!thumbUrl) {
-                    thumbUrl = getNodeAttribute(img_list[i], 'src');
-                }
-                if (thumbUrl) {
-                    break;
-                }
-            }
-            var text_list = node.getElementsByTagName('span');
-            for (var i in text_list) {
-                var className = getNodeAttribute(text_list[i], 'class');
-                if (className == 'title_text') {
-                    videoName = text_list[i].innerHTML;
-                    if (videoName) {
-                        break;
-                    }
-                }
-            }
 
-            var object = {};
-            object.websiteUrl = videoUrl;
-            object.thumbUrl = thumbUrl;
-            object.name = videoName;
-            object.isNeedParse = true;
-            object.resourceType = object.video;
-            resourceList.push(object);
-
+            var videoHtml = getHtmlWithUrl(videoUrl);
+            resourceList = resourceList.concat(vimeo_detail_crawler(videoUrl, videoHtml));
+0
             node = xPathResult.iterateNext();
         }
     }

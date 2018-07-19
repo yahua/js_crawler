@@ -46,12 +46,8 @@ function videospexels_crawler(websiteUrl, html) {
         }
     }
     if (videoUrl) {
-        var object = {};
-        object.websiteUrl = websiteUrl;
-        object.thumbUrl = thumbUrl;
-        object.name = videoName;
-        object.videoUrlList = [videoUrl];
-        object.resourceType = ResourceType.video;
+        var object = createResourceObject(websiteUrl, videoName, ResourceType.video,
+            thumbUrl, [videoUrl]);
         resultList.push(object);
     }
 

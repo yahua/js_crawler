@@ -1,7 +1,10 @@
 function xnxx_xvideos_crawler(websiteUrl, html) {
 
     if (html.indexOf('new HTML5Player') != -1) {
-        return xnxx_xvideos_detail_crawler(websiteUrl, html);
+        var result = [];
+        result = result.concat(xnxx_xvideos_detail_crawler(websiteUrl, html));
+        result = result.concat(xnxx_xvideos_relate_list_crawler(websiteUrl, html));
+        return result;
     }else {
         return xnxx_xvideos_list_crawler(websiteUrl, html);
     }
@@ -24,16 +27,18 @@ function xnxx_xvideos_detail_crawler(websiteUrl, html) {
         videoList.push(lowVideoUrl);
     }
     if (videoList.length >0 ){
-        var object = {};
-        object.websiteUrl = websiteUrl;
-        object.thumbUrl = thumbUrl;
-        object.name = title;
-        object.videoUrlList = videoList;
-        object.resourceType = ResourceType.video;
+        var object = createResourceObject(websiteUrl, title, ResourceType.video,
+            thumbUrl, videoList);
         resultList.push(object);
     }
+    return resultList;
+}
+
+//获取视频详情页的关联列表
+function xnxx_xvideos_relate_list_crawler(websiteUrl, html) {
 
     //获取相关列表的视频信息
+    var resultList = [];
     var relateVideoString = getMiddleString(html, "video_related=\\[", "\\];");
     relateVideoString = "\[" + relateVideoString + "\]";
     var relateList = JSON.parse(relateVideoString);
@@ -42,24 +47,16 @@ function xnxx_xvideos_detail_crawler(websiteUrl, html) {
         if (!(object instanceof Object)) {
             continue;
         }
-        var relateVideUrl = object['u'];
-        if (!relateVideUrl) {
+        var relateVideoUrl = object['u'];
+        if (!relateVideoUrl) {
             continue;
         }
-        if (relateVideUrl && !getUrlInfo(relateVideUrl)['scheme']){
-            relateVideUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
-                getUrlInfo(websiteUrl)['host'] + relateVideUrl;
+        if (relateVideoUrl && !getUrlInfo(relateVideoUrl)['scheme']){
+            relateVideoUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
+                getUrlInfo(websiteUrl)['host'] + relateVideoUrl;
         }
-        var relateThumbUrl = object['i'];
-        var relateName = object['tf'];
-
-        var object = {};
-        object.websiteUrl = relateVideUrl;
-        object.thumbUrl = relateThumbUrl;
-        object.name = relateName;
-        object.isNeedParse = true;
-        object.resourceType = ResourceType.video;
-        resultList.push(object);
+        var relateHtml = getHtmlWithUrl(relateVideoUrl);
+        resultList = resultList.concat(xnxx_xvideos_detail_crawler(relateVideoUrl, relateHtml));
     }
 
     return resultList;
@@ -80,29 +77,15 @@ function xnxx_xvideos_list_crawler(websiteUrl, html) {
         while(node) {
             var videoUrl = getNodeAttributeOrHtml(node, 'a', ['href', 'title'], {'class':null},
                 null, 'href');
-            var videoName = getNodeAttributeOrHtml(node, 'a', ['href', 'title'], {'class':null},
-                null, 'title');
-            var thumbUrl = getNodeAttributeOrHtml(node, 'img', ['data-src'], null,
-                null, 'data-src');
-            if (!thumbUrl) {
-                thumbUrl = getNodeAttributeOrHtml(node, 'img', ['src'], null,
-                    null, 'src');
-            }
             //补全
             if (videoUrl && !getUrlInfo(videoUrl)['scheme']){
                 videoUrl = getUrlInfo(websiteUrl)['scheme'] + '://' +
                     getUrlInfo(websiteUrl)['host'] + videoUrl;
             }
             if (videoUrl) {
-                var object = {};
-                object.websiteUrl = videoUrl;
-                object.thumbUrl = thumbUrl;
-                object.name = videoName;
-                object.isNeedParse = true;
-                object.resourceType = ResourceType.video;
-                resourceList.push(object);
+                var videoHtml = getHtmlWithUrl(videoUrl);
+                resourceList = resourceList.concat(xnxx_xvideos_detail_crawler(videoUrl, videoHtml));
             }
-
 
             node = xPathResult.iterateNext();
         }

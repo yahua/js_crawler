@@ -16,23 +16,35 @@
 // }
 
 /**
+ * 配置爬取环境变量
+ * @param clientType   0:ios   1:android   100:测试环境
+ */
+function initCrawlerConfig(clientType) {
+
+    ClientType = clientType;
+}
+
+/**
  * @method 爬取网页资源
  * @websiteUrl  网页对应的url
  * @html 网页对应的源码
- * @clientType 0:ios   1:android
  */
-function crawlerResource(websiteUrl, html, clientType) {
+function crawlerResource(websiteUrl, html) {
 
-    ClientType = clientType;
-    if (clientType == 1) { //安卓不能下载youtube的任何资源
+    var jsonStr;
+    if (ClientType == CrawlerClientType.android) { //安卓不能下载youtube的任何资源
         if (getUrlInfo(websiteUrl).host.indexOf('youtube') != -1) {
-            var jsonStr = JSON.stringify([], undefined, 4);
-            crawler_end(websiteUrl, jsonStr);
-            return jsonStr;
+            jsonStr = JSON.stringify([], undefined, 4);
         }
+    }else  {
+        var list = reptileResource(websiteUrl, html)
+        jsonStr = JSON.stringify(list, undefined, 4);
     }
-    //js实现
-    return reptileResource(websiteUrl, html)
+    crawler_end(websiteUrl, jsonStr);
+
+    if (ClientType != CrawlerClientType.android) {
+        return jsonStr;
+    }
 }
 
 /**
@@ -63,7 +75,10 @@ function useJavaScriptHandleSearchString(input) {
         returnInput = findUrl;
     }
     handleSearchStringFinish(returnInput);
-    return returnInput;
+
+    if (ClientType != CrawlerClientType.android) {
+        return returnInput;
+    }
 }
 
 /**

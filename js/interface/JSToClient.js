@@ -8,8 +8,8 @@
 function crawler_start(websiteUrl) {
 
     //客户端可重写
-    if (ClientType == 1) {  //安卓会注入andriod对象
-        andriod.crawler_start(websiteUrl);
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.crawler_start(websiteUrl);
     }
 }
 
@@ -21,7 +21,7 @@ function crawler_start(websiteUrl) {
 function crawler_end(websiteUrl, resourceInfoListJsonStr) {
 
     //客户端可重写
-    if (ClientType == 1) {  //安卓会注入andriod对象
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
         var list = JSON.parse(resourceInfoListJsonStr);
         var newList = [];
         if (list && list.length>0) {
@@ -37,7 +37,7 @@ function crawler_end(websiteUrl, resourceInfoListJsonStr) {
                 newList.push(dict)
             }
         }
-        andriod.crawler_end(websiteUrl, JSON.stringify(newList, undefined, 4));
+        android.crawler_end(websiteUrl, JSON.stringify(newList, undefined, 4));
     }
 
 }
@@ -49,9 +49,10 @@ function crawler_end(websiteUrl, resourceInfoListJsonStr) {
  */
 function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
 
+    crawler_log('crawler_one_Resource');
     //客户端可重写
-    if (ClientType == 1) {  //安卓会注入andriod对象
-        andriod.crawler_one_Resource(websiteUrl, resourceInfoJsonStr);
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.crawler_one_Resource(websiteUrl, resourceInfoJsonStr);
     }
 }
 
@@ -61,8 +62,8 @@ function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
 function crawler_log(log) {
 
     //客户端可重写
-    if (ClientType == 1) {  //安卓会注入andriod对象
-        andriod.crawler_log(log);
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.crawler_log(log);
     }
     console.log(log)
 }
@@ -74,11 +75,13 @@ function crawler_log(log) {
 function getHtmlWithUrl(websiteUrl) {
 
     //客户端实现
-    if (ClientType == 1) {  //安卓会注入andriod对象
-        andriod.getHtmlWithUrl(websiteUrl);
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.getHtmlWithUrl(websiteUrl);
     }
-    //测试代码
-    return downloadHtmlWithUrl(websiteUrl).html;
+    if (ClientType == CrawlerClientType.test) {
+        //测试代码
+        return downloadHtmlWithUrl(websiteUrl).html;
+    }
 }
 
 /**
@@ -90,11 +93,13 @@ function getHtmlWithUrl(websiteUrl) {
 function httpRequest(url, method, requestData) {
 
     //客户端实现
-    if (ClientType == 1) {  //安卓会注入andriod对象
-        andriod.httpRequest(url, method, requestData);
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.httpRequest(url, method, requestData);
     }
-    //默认返回
-    return '';
+    if (ClientType == CrawlerClientType.test) {
+        //默认返回
+        return '';
+    }
 }
 
 /**
@@ -105,7 +110,7 @@ function handleSearchStringFinish(searchUrl) {
 
     //客户端实现
 
-    if (ClientType == 1) {  //安卓会注入andriod对象
-        andriod.handleSearchStringFinish(searchUrl);
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.handleSearchStringFinish(searchUrl);
     }
 }

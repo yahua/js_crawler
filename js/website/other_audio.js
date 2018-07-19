@@ -55,12 +55,8 @@ function other_audio_crawler(websiteUrl, html) {
 
     if (resourceUrl) {
 
-        var object = {};
-        object.websiteUrl = websiteUrl;
-        object.thumbUrl = thumbUrl;
-        object.name = name;
-        object.videoUrlList = [resourceUrl];
-        object.resourceType = ResourceType.audio;
+        var object = createResourceObject(websiteUrl, name, ResourceType.audio,
+            null, [resourceUrl]);
         resultList.push(object);
     }
 

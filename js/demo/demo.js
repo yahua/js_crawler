@@ -110,7 +110,8 @@ function runTestWithWebsiteUrl(url, html) {
             }
             crawlerHtml = htmlRequest.html;
         }
-        var result = crawlerResource(url, crawlerHtml, 0);
+        initCrawlerConfig({'clientType':CrawlerClientType.test})
+        var result = crawlerResource(url, crawlerHtml);
         var obj = JSON.parse(result);
         if (obj && obj.length>0) {
             var output = {"websiteUrl":url, "resourceList":obj};

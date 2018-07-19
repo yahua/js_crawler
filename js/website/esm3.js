@@ -159,15 +159,9 @@ function esm3_downloadPage_crawler(websiteUrl, html) {
         }
     }
     if (resourceUrl) {
-        var thumbUrl;
-
-        var resourceInfo = {};
-        resourceInfo.websiteUrl = websiteUrl;
-        resourceInfo.thumbUrl = thumbUrl;
-        resourceInfo.name = name;
-        resourceInfo.videoUrlList = [resourceUrl];
-        resourceInfo.resourceType = ResourceType.audio;
-        return resourceInfo;
+        var object = createResourceObject(websiteUrl, name, ResourceType.audio,
+            null, [resourceUrl]);
+        return object;
     }else {
         console.log('爬取不到的网站:' + websiteUrl);
         return null;

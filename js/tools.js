@@ -9,7 +9,35 @@ var ResourceType = {
     audio:500,
 }
 
-var ClientType = 0;   //客户端类型默认为ios   1：andriod
+//资源类型
+var CrawlerClientType = {
+    ios:0,
+    android:1,
+    test:100,
+}
+
+var ClientType = CrawlerClientType.android;   //客户端类型默认为android,  因为安卓有限制条件
+
+
+function createResourceObject(websiteUrl, resourceName, resourceType, resourceThumbUrl, resourceDownloadUrlList) {
+
+    if (!resourceName) {  //根据域名加时间戳生成资源名称
+        var d = new Date();
+        resourceName = getUrlInfo(websiteUrl).host + '-' + d.getTime();
+    }
+
+    var object = {};
+    object.websiteUrl = websiteUrl;
+    object.thumbUrl = resourceThumbUrl;
+    object.videoUrlList = resourceDownloadUrlList;
+    object.name = resourceName;
+    object.resourceType = resourceType;
+
+    //
+    crawler_one_Resource(websiteUrl, JSON.stringify(object, undefined, 4))
+
+    return object;
+}
 
 function getMiddleString(string, start, end) {
 

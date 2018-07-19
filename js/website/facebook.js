@@ -18,14 +18,9 @@ function facebook_crawler(websiteUrl, html) {
         }
     }
     if (videoUrl) {
-        var json = [];
-        var object = {};
-        object.websiteUrl = websiteUrl;
-        object.thumbUrl = thumbUrl;
-        object.videoUrlList = [videoUrl];
-        object.resourceType = ResourceType.video;
-        json.push(object);
-        return json;
+        var object = createResourceObject(websiteUrl, null, ResourceType.video,
+            thumbUrl, [videoUrl]);
+        return [object];
     }
     return [];
 }
