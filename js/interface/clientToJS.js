@@ -35,6 +35,9 @@ function crawlerResource(websiteUrl, html) {
     if (ClientType == CrawlerClientType.android) { //安卓不能下载youtube的任何资源
         if (getUrlInfo(websiteUrl).host.indexOf('youtube') != -1) {
             jsonStr = JSON.stringify([], undefined, 4);
+        }else  {
+            var list = reptileResource(websiteUrl, html)
+            jsonStr = JSON.stringify(list, undefined, 4);
         }
     }else  {
         var list = reptileResource(websiteUrl, html)
