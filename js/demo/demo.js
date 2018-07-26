@@ -132,8 +132,8 @@ function runTestWithWebsiteUrl(url, html) {
                     break;
                 }
                 if (!dict.hasOwnProperty('isNeedParse')) {
-                    var videoUrlList = dict['videoUrlList'];
-                    if (!videoUrlList || videoUrlList.length==0) {
+                    var resourceUrlList = dict['resourceUrlList'];
+                    if (!resourceUrlList || resourceUrlList.length==0) {
                         console.log('没有获取到资源的url');
                         validResource = false;
                         break;

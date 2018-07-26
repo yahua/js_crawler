@@ -3,8 +3,8 @@
 //     "websiteUrl": 网站的url
 //     "thumbUrl": 抓取资源的缩略图
 //     "name": 资源名字
-//     "videoUrlList": []  资源列表，array， ps：视频会有多个清晰度， 默认最高清的在前面
-//     "isNeedParse": true   //是否需要再次解析，对于列表的视频需要再次解析，减少爬取时间，当是true时，videoUrlList为空
+//     "resourceUrlList": []  资源列表，array， ps：视频会有多个清晰度， 默认最高清的在前面
+//     "isNeedParse": true   //是否需要再次解析，对于列表的视频需要再次解析，减少爬取时间，当是true时，resourceUrlList
 //     "resourceType" -1      //资源类型
 // -1:未知类型
 // 100:视频

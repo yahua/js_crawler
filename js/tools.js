@@ -29,7 +29,7 @@ function createResourceObject(websiteUrl, resourceName, resourceType, resourceTh
     var object = {};
     object.websiteUrl = websiteUrl;
     object.thumbUrl = resourceThumbUrl;
-    object.videoUrlList = resourceDownloadUrlList;
+    object.resourceUrlList = resourceDownloadUrlList;
     object.name = resourceName;
     object.resourceType = resourceType;
 

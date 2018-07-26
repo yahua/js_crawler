@@ -28,9 +28,9 @@ function crawler_end(websiteUrl, resourceInfoListJsonStr) {
             //剔除youtube视频资源
             for (var i=0; i<list.length; i++){
                 var dict = list[i];
-                var videoUrlList = dict['videoUrlList'];
-                if (videoUrlList && videoUrlList.length>0) {
-                    if (getUrlInfo(videoUrlList[0]).host.indexOf('youtube') != -1) {
+                var resourceUrlList = dict['resourceUrlList'];
+                if (resourceUrlList && resourceUrlList.length>0) {
+                    if (getUrlInfo(resourceUrlList[0]).host.indexOf('youtube') != -1) {
                         continue;
                     }
                 }

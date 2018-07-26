@@ -25,7 +25,7 @@ function dailymotion_crawler(websiteUrl, html) {
         if (videoInfo && videoInfo.hasOwnProperty('auto')) {
             delete videoInfo['auto'];
         }
-        var videoUrlList = [];
+        var resourceUrlList = [];
         for (var key in videoInfo) {
             var object = videoInfo[key];
             if (Array.isArray(object)) {
@@ -35,19 +35,19 @@ function dailymotion_crawler(websiteUrl, html) {
                         var type = dict['type'];
                         if (type.indexOf('video') != -1 && dict.hasOwnProperty('url')) {
                             var videoUrl = dict['url'];
-                            videoUrlList.push(videoUrl);
+                            resourceUrlList.push(videoUrl);
                         }
                     }
                 }
                 //倒序输出， 清晰的最高的在后面
-                videoUrlList.reverse();
+                resourceUrlList.reverse();
             }
         }
     }
 
-    if (videoUrlList.length>0) {
+    if (resourceUrlList.length>0) {
         var object = createResourceObject(websiteUrl, videoName, ResourceType.video,
-            thumbUrl, videoUrlList);
+            thumbUrl, resourceUrlList);
         return [object];
     }
     return [];
