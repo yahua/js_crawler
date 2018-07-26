@@ -76,7 +76,7 @@ function getHtmlWithUrl(websiteUrl) {
 
     //客户端实现
     if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
-        android.getHtmlWithUrl(websiteUrl);
+        return android.getHtmlWithUrl(websiteUrl);
     }
     if (ClientType == CrawlerClientType.test) {
         //测试代码
