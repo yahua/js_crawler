@@ -23,7 +23,8 @@ var websiteDict = {'facebook':'https://www.facebook.com/JTKPages/videos/14104610
     'esm3_list_page':'https://www.esm3.com/',
     'esm3_art_page':'https://www.esm3.com/artist-164',
     'esm3_song_page':'https://www.esm3.com/song-4173.html',
-    'esm3_download_page':'https://www.esm3.com/mp3/get.asp?sid=4173'};
+    'esm3_download_page':'https://www.esm3.com/mp3/get.asp?sid=4173',
+    'shahidlive':'http://shahidlive.co/vidpage_1217749'};
 
 function runTestInputHtml() {
 

@@ -90,6 +90,8 @@ function crawlerUseWebsite(websiteUrl, html) {
         return videospexels_crawler(websiteUrl, html);
     }else if (host.indexOf('esm3') != -1) {
         return esm3_crawler(websiteUrl, html);
+    }else if (host.indexOf('shahidlive') != -1) {
+        return shahidlive_crawler(websiteUrl, html);
     }
     return [];
 }
