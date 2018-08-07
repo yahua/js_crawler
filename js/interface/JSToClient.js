@@ -49,7 +49,6 @@ function crawler_end(websiteUrl, resourceInfoListJsonStr) {
  */
 function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
 
-    crawler_log('crawler_one_Resource');
     //客户端可重写
     if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
         android.crawler_one_Resource(websiteUrl, resourceInfoJsonStr);

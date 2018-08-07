@@ -34,6 +34,7 @@ function createResourceObject(websiteUrl, resourceName, resourceType, resourceTh
     object.resourceType = resourceType;
 
     //
+    crawler_log('crawler_one_Resource');
     crawler_one_Resource(websiteUrl, JSON.stringify(object, undefined, 4))
 
     return object;

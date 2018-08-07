@@ -8,31 +8,6 @@ function reptileResource(websiteUrl, html) {
     //开始爬取
     crawler_start(websiteUrl);
 
-    crawler_log('进入接口爬取资源');
-    //将手机域名替换为正常域名
-    var newWebsiteUrl = websiteUrl.replace('//m.', '//www.')
-    newWebsiteUrl = newWebsiteUrl.replace('//mobile.', '//www.')
-    var httpResponse = httpRequest(httpDownloadUrl, 'post', {'url':newWebsiteUrl});
-    try {
-        var obj = JSON.parse(httpResponse);
-        if (obj.status == 1) {
-            var title = obj.result.title;
-            var thumbUrl = obj.result.thumbnail;
-            var videoUrl = obj.result.streams[0].url;
-            if (videoUrl && videoUrl.length>0) {
-                crawler_log('通过接口抓取到了资源');
-                if (!title ||title.length==0) {
-                    title = getUrlInfo(websiteUrl).host + '-' + new Date().getTime();
-                }
-                var object = createResourceObject(websiteUrl, title, ResourceType.video,
-                    thumbUrl, [videoUrl]);
-                return [object];
-            }
-        }
-    }catch (e) {
-
-    }
-
     //设置超时时间
     var timeId = setTimeout(function () {
         return [];
@@ -55,6 +30,34 @@ function reptileResource(websiteUrl, html) {
             resourceList = crawlerUseCommon(websiteUrl, html);
         }
     }
+
+    if (resourceList.length==0) {
+        crawler_log('进入接口爬取资源');
+        //将手机域名替换为正常域名
+        var newWebsiteUrl = websiteUrl.replace('//m.', '//www.')
+        newWebsiteUrl = newWebsiteUrl.replace('//mobile.', '//www.')
+        var httpResponse = httpRequest(httpDownloadUrl, 'post', {'url':newWebsiteUrl});
+        try {
+            var obj = JSON.parse(httpResponse);
+            if (obj.status == 1) {
+                var title = obj.result.title;
+                var thumbUrl = obj.result.thumbnail;
+                var videoUrl = obj.result.streams[0].url;
+                if (videoUrl && videoUrl.length>0) {
+                    crawler_log('通过接口抓取到了资源');
+                    if (!title ||title.length==0) {
+                        title = getUrlInfo(websiteUrl).host + '-' + new Date().getTime();
+                    }
+                    var object = createResourceObject(websiteUrl, title, ResourceType.video,
+                        thumbUrl, [videoUrl]);
+                    return [object];
+                }
+            }
+        }catch (e) {
+
+        }
+    }
+
     clearTimeout(timeId);
 
     return resourceList;
