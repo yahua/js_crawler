@@ -92,6 +92,12 @@ function crawlerUseWebsite(websiteUrl, html) {
         return esm3_crawler(websiteUrl, html);
     }else if (host.indexOf('shahidlive') != -1) {
         return shahidlive_crawler(websiteUrl, html);
+    }else if (host.indexOf('r2sa') != -1) {
+        return r2sa_crawler(websiteUrl, html);
+    }else if (host.indexOf('rotana') != -1) {
+        return rotana_crawler(websiteUrl, html);
+    }else if (host.indexOf('mbc.net') != -1) {
+        return mbc_crawler(websiteUrl, html);
     }
     return [];
 }
