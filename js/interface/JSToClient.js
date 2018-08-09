@@ -2,6 +2,16 @@
 //js调用客户端方法
 
 /**
+ * @method 返回当前网页的html
+ */
+function getCurrentWebHtml() {
+    //客户端可重写
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        return android.getCurrentWebHtml();
+    }
+}
+
+/**
  * @method 爬取开始
  * @websiteUrl  网页对应的url
  */
@@ -71,11 +81,11 @@ function crawler_log(log) {
  * @method 请求客户端下载html  需同步返回
  * @websiteUrl  网页对应的url
  */
-function getHtmlWithUrl(websiteUrl, heades) {
+function getHtmlWithUrl(websiteUrl, headers) {
 
     //客户端实现
     if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
-        return android.getHtmlWithUrl(websiteUrl);
+        return android.getHtmlWithUrl(websiteUrl, headers);
     }
     if (ClientType == CrawlerClientType.test) {
         //测试代码

@@ -36,14 +36,16 @@ function rotana_crawler(websiteUrl, html) {
                 iframeUrl = 'http://' + iframeUrl;
             }
             if (iframeUrl && iframeUrl.length>0 ) {
-                var iframeHtml = getHtmlWithUrl(iframeUrl, {'User-Agent':websiteUrl})
+                var iframeHtml = getHtmlWithUrl(iframeUrl, {'referer':websiteUrl})
                 el.innerHTML = iframeHtml;
                 var xPathResult = document.evaluate("//input[@class='HiddenmyhHlsLink']", el, null,
                     XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
                 var m3u8URL = null;
                 if (xPathResult) {
                     var node = xPathResult.iterateNext();
-                    m3u8URL = getNodeAttribute(node, 'value');
+                    if(node) {
+                        m3u8URL = getNodeAttribute(node, 'value');
+                    }
                 }
                 if (m3u8URL) {
                     var object = createResourceObject(websiteUrl, resourceName, ResourceType.m3u8,

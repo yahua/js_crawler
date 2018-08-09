@@ -25,6 +25,16 @@ function initCrawlerConfig(clientType) {
 }
 
 /**
+ * @method android爬取网页资源
+ * @websiteUrl  网页对应的url
+ */
+function android_crawlerResource(websiteUrl) {
+
+    var html = getCurrentWebHtml()
+    return crawlerResource(websiteUrl, html);
+}
+
+/**
  * @method 爬取网页资源
  * @websiteUrl  网页对应的url
  * @html 网页对应的源码

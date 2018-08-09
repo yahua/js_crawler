@@ -10,6 +10,7 @@ function reptileResource(websiteUrl, html) {
 
     //设置超时时间
     var timeId = setTimeout(function () {
+        crawler_log('爬取超时了')
         return [];
     }, timeOutLength);
 
