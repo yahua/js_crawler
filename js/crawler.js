@@ -11,6 +11,9 @@ function reptileResource(websiteUrl, html) {
     //设置超时时间
     var timeId = setTimeout(function () {
         crawler_log('爬取超时了')
+        var jsonStr = JSON.stringify([], undefined, 4);
+        crawler_end(websiteUrl, jsonStr)
+        crawler_timeout(websiteUrl)
         return [];
     }, timeOutLength);
 

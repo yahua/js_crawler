@@ -1,5 +1,8 @@
 function dailymotion_crawler(websiteUrl, html) {
 
+    //比较特殊，需要请求html  不需要客户端自带的html，  要不然一直爬取的是第一次打开的资源
+    html = getHtmlWithUrl(websiteUrl);
+
     var el = document.createElement( 'html' );
     el.innerHTML = html;
     var metaList = el.getElementsByTagName("meta");
@@ -17,6 +20,7 @@ function dailymotion_crawler(websiteUrl, html) {
             videoName = subElement.getAttribute('content');
         }
     }
+    var resourceUrlList = [];
     //获取视频信息
     var videoString = getMiddleString(html, "\"qualities\":{", "}]}");
     if (videoString) {
@@ -25,7 +29,6 @@ function dailymotion_crawler(websiteUrl, html) {
         if (videoInfo && videoInfo.hasOwnProperty('auto')) {
             delete videoInfo['auto'];
         }
-        var resourceUrlList = [];
         for (var key in videoInfo) {
             var object = videoInfo[key];
             if (Array.isArray(object)) {

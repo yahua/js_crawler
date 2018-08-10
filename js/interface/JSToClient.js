@@ -66,6 +66,19 @@ function crawler_one_Resource(websiteUrl, resourceInfoJsonStr) {
 }
 
 /**
+ * @method 爬取超时了
+ * @websiteUrl  网页对应的url
+ */
+function crawler_timeout(websiteUrl) {
+
+    //客户端可重写
+    if (ClientType == CrawlerClientType.android) {  //安卓会注入android对象
+        android.crawler_timeout(websiteUrl);
+    }
+}
+
+
+/**
  * @method 输出js爬取的log
  */
 function crawler_log(log) {
